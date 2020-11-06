@@ -1,0 +1,90 @@
+[
+    {
+        "league_name": "Premier League",
+        "url": "/Regions/252/Tournaments/2/England-Premier-League"
+    },
+    {
+        "league_name": "Serie A",
+        "url": "/Regions/108/Tournaments/5/Italy-Serie-A"
+    },
+    {
+        "league_name": "LaLiga",
+        "url": "/Regions/206/Tournaments/4/Spain-LaLiga"
+    },
+    {
+        "league_name": "Bundesliga",
+        "url": "/Regions/81/Tournaments/3/Germany-Bundesliga"
+    },
+    {
+        "league_name": "Ligue 1",
+        "url": "/Regions/74/Tournaments/22/France-Ligue-1"
+    },
+    {
+        "league_name": "Liga NOS",
+        "url": "/Regions/177/Tournaments/21/Portugal-Liga-NOS"
+    },
+    {
+        "league_name": "Eredivisie",
+        "url": "/Regions/155/Tournaments/13/Netherlands-Eredivisie"
+    },
+    {
+        "league_name": "Premier League",
+        "url": "/Regions/182/Tournaments/77/Russia-Premier-League"
+    },
+    {
+        "league_name": "Brasileir\u00e3o",
+        "url": "/Regions/31/Tournaments/95/Brazil-Brasileir\u00e3o"
+    },
+    {
+        "league_name": "Major League Soccer",
+        "url": "/Regions/233/Tournaments/85/USA-Major-League-Soccer"
+    },
+    {
+        "league_name": "Super Lig",
+        "url": "/Regions/225/Tournaments/17/Turkey-Super-Lig"
+    },
+    {
+        "league_name": "Championship",
+        "url": "/Regions/252/Tournaments/7/England-Championship"
+    },
+    {
+        "league_name": "Premiership",
+        "url": "/Regions/253/Tournaments/20/Scotland-Premiership"
+    },
+    {
+        "league_name": "League One",
+        "url": "/Regions/252/Tournaments/8/England-League-One"
+    },
+    {
+        "league_name": "League Two",
+        "url": "/Regions/252/Tournaments/9/England-League-Two"
+    },
+    {
+        "league_name": "Superliga",
+        "url": "/Regions/11/Tournaments/68/Argentina-Superliga"
+    },
+    {
+        "league_name": "Jupiler Pro League",
+        "url": "/Regions/22/Tournaments/18/Belgium-Jupiler-Pro-League"
+    },
+    {
+        "league_name": "Super league",
+        "url": "/Regions/45/Tournaments/162/China-Super-league"
+    },
+    {
+        "league_name": "Bundesliga II",
+        "url": "/Regions/81/Tournaments/6/Germany-Bundesliga-II"
+    },
+    {
+        "league_name": "Champions League",
+        "url": "/Regions/250/Tournaments/12/Europe-Champions-League"
+    },
+    {
+        "league_name": "Europa League",
+        "url": "/Regions/250/Tournaments/30/Europe-Europa-League"
+    },
+    {
+        "league_name": "UEFA Nations League A",
+        "url": "/Regions/247/Tournaments/683/International-UEFA-Nations-League-A"
+    }
+]
