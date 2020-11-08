@@ -17,7 +17,11 @@ def get_driver(driver_path):
     :param driver_path: Path to the chromedriver that execute the script
     :return: The driver to navigate and get the html of the page
     """
-    return webdriver.Chrome(executable_path=driver_path)
+    try:
+        return webdriver.Chrome(executable_path=driver_path)
+    except Exception:
+        raise FileNotFoundError("Could not execute webdriver. Make sure you provided the correct path to the "
+                                "chromedriver")
 
 
 def pretty_print(elem):
@@ -73,4 +77,12 @@ def main(driver_path):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1])
+    try:
+        if len(sys.argv) > 1:
+            main(sys.argv[1])
+        else:
+            raise Exception("Please provide a path to the chromedriver")
+    except Exception as e:
+        print(f"Invalid input: {e}")
+
+
