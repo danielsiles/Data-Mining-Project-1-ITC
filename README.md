@@ -30,6 +30,19 @@ To run the script run the following.
 ```bash
 main.py [CHROMEDRIVER PATH]
 ``` 
- 
-## Team
 
+## Contributing
+Please refer to contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
+
+1. Fork the repo on GitHub
+2. Clone the project to your own machine
+3. Commit changes to your own branch
+4. Push your work back up to your fork
+5. Submit a Pull request so that we can review your changes
+
+ 
+## Team 
+ 
+[![danielsiles](https://avatars2.githubusercontent.com/u/7890950?s=400&v=4)](https://github.com/danielsiles)  | [![AlxZed](https://avatars1.githubusercontent.com/u/34654828?s=400&u=12ecef205a171fbf8bb32342ebbfce94345e9a39&v=4)](https://github.com/AlxZed)
+---|---
+[Daniel Siles](https://github.com/danielsiles) | [Alex Zabbal](https://github.com/AlxZed)
