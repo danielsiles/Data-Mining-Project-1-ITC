@@ -277,6 +277,7 @@ import json
 import os
 from selenium import webdriver
 
+from player_match_statistics import get_player_match_statistics_page_html, parse_player_match_statistics
 
 BASE_URL = "https://whoscored.com"
 
@@ -285,14 +286,19 @@ def get_driver():
 
 def main():
     # Opens the browser for selenium
-    # driver = get_driver()
+    driver = get_driver()
 
     # Gets urls for popular leagues
-    with open("popular_leagues.json", "r") as file:
-        leagues = json.loads(file.read())
-        for league in leagues:
-            print(league["league_name"])
-            print(BASE_URL + league["url"])
+    # with open("popular_leagues.json", "r") as file:
+    #     leagues = json.loads(file.read())
+    #     for league in leagues:
+    #         print(league["league_name"])
+    #         print(BASE_URL + league["url"])
+
+    # Parsing player match statistics
+    player_match_statistics_html = get_player_match_statistics_page_html(driver,
+        "https://www.whoscored.com/Matches/1457748/LiveStatistics/Brazil-Brasileir%C3%A3o-2020-Palmeiras-Atletico-MG")
+    parse_player_match_statistics(player_match_statistics_html)
 
 
 if __name__ == '__main__':
@@ -327,6 +333,8 @@ if __name__ == '__main__':
     # Parsing player match statistics
     # player_match_statistics_html = get_player_match_statistics_page_html("https://www.whoscored.com/Matches/1457748/LiveStatistics/Brazil-Brasileir%C3%A3o-2020-Palmeiras-Atletico-MG")
     # parse_player_match_statistics(player_match_statistics_html)
+
+
 
     # NEW CODEEEE
 

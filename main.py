@@ -7,6 +7,7 @@ from league_fixtures import get_league_fixtures, parse_league_fixtures
 from league_table import get_league_page_html, parse_league_table_data
 from match_report import get_match_report_page_html, parse_match_report
 from match_statistics import get_match_statistics_page_html, parse_match_statistics
+from player_match_statistics import get_player_match_statistics_page_html, parse_player_match_statistics
 
 BASE_URL = "https://whoscored.com"
 
@@ -48,6 +49,14 @@ def main(driver_path):
     match_report = parse_match_report(match_report_html)
 
     pretty_print(match_report)
+
+    player_match_statistics_html = get_player_match_statistics_page_html(driver,
+                                                                         BASE_URL + league_fixtures[0]["url"].replace(
+                                                                             "Show", "LiveStatistics"))
+    home_players, away_players = parse_player_match_statistics(player_match_statistics_html)
+
+    pretty_print(home_players)
+    pretty_print(away_players)
 
 
 if __name__ == '__main__':

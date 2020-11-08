@@ -1,7 +1,8 @@
 # Data Mining - ITC
 
-## Installation
+## Project
 
+This project ...
 
 
 ## Installation
