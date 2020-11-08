@@ -2,12 +2,22 @@ from bs4 import BeautifulSoup as bs
 
 
 def get_league_page_html(driver, url):
+    """
+    Get the html page of a league with information about table
+    :param driver: driver to navigate to url and execute script
+    :param url: A url of the website that will be scraped by the driver
+    :return: Html element scraped by the driver
+    """
     driver.get(url)
-    html = driver.execute_script("return document.documentElement.outerHTML;")
-    return html
+    return driver.execute_script("return document.documentElement.outerHTML;")
 
 
 def parse_league_table_data(html):
+    """
+    Parse the html element that contains data about league table
+    :param html: Html element scraped to be parsed
+    :return: The list of teams of a league with all the data with respect to the performance at the league
+    """
     soup = bs(html, 'html.parser')
     tournament_table = soup.find("div", class_="tournament-standings-table")
     league_table_rows = tournament_table.find("tbody", class_="standings")

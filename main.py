@@ -1,5 +1,4 @@
 import json
-import os
 import sys
 from selenium import webdriver
 
@@ -13,14 +12,27 @@ BASE_URL = "https://whoscored.com"
 
 
 def get_driver(driver_path):
+    """
+    Initialize the webdriver with chromedriver.
+    :param driver_path: Path to the chromedriver that execute the script
+    :return: The driver to navigate and get the html of the page
+    """
     return webdriver.Chrome(executable_path=driver_path)
 
 
 def pretty_print(elem):
+    """
+    Formats the dictionary and print it to the console.
+    :param elem: Dictionary to be printed
+    """
     print(json.dumps(elem, indent=4, sort_keys=True))
 
 
 def main(driver_path):
+    """
+    Main function. Execute all the test scripts to scrape the data.
+    :param driver_path: Path to the chromedriver that execute the script
+    """
     # Opens the browser for selenium
     driver = get_driver(driver_path)
 
@@ -40,23 +52,24 @@ def main(driver_path):
 
     match_statistics_html = get_match_statistics_page_html(driver,
                                                            BASE_URL + league_fixtures[0]["url"].replace("Show", "Live"))
-    match_statistics = parse_match_statistics(match_statistics_html)
+    match_statistics_home, match_statistics_away = parse_match_statistics(match_statistics_html)
 
-    pretty_print(match_statistics)
+    pretty_print(match_statistics_home)
+    pretty_print(match_statistics_away)
 
     match_report_html = get_match_report_page_html(driver,
                                                    BASE_URL + league_fixtures[0]["url"].replace("Show", "MatchReport"))
-    match_report = parse_match_report(match_report_html)
+    match_report_home, match_report_away = parse_match_report(match_report_html)
 
-    pretty_print(match_report)
+    pretty_print(match_report_home)
+    pretty_print(match_report_away)
 
     player_match_statistics_html = get_player_match_statistics_page_html(driver,
                                                                          BASE_URL + league_fixtures[0]["url"].replace(
                                                                              "Show", "LiveStatistics"))
-    home_players, away_players = parse_player_match_statistics(player_match_statistics_html)
+    player_match_statistics = parse_player_match_statistics(player_match_statistics_html)
 
-    pretty_print(home_players)
-    pretty_print(away_players)
+    pretty_print(player_match_statistics)
 
 
 if __name__ == '__main__':

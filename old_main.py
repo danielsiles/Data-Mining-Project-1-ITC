@@ -298,7 +298,7 @@ def main():
     # Parsing player match statistics
     player_match_statistics_html = get_player_match_statistics_page_html(driver,
         "https://www.whoscored.com/Matches/1457748/LiveStatistics/Brazil-Brasileir%C3%A3o-2020-Palmeiras-Atletico-MG")
-    parse_player_match_statistics(player_match_statistics_html)
+    print(parse_player_match_statistics(player_match_statistics_html))
 
 
 if __name__ == '__main__':
