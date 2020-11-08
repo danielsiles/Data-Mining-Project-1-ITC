@@ -4,9 +4,6 @@ A python script to scrape data from the [WhoScored](https://whoscored.com).
 It scrapes data from all of the top leagues such as the league table, next matches,
 match statistics and players statistics for each match. 
 
-## Project
-
-
 ## Installation
 
 Install requirements
