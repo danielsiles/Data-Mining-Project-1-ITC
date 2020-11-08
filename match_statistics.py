@@ -36,4 +36,3 @@ def parse_match_statistics(html):
     away_team = dict(zip(row_keys, away_team))
 
     return home_team, away_team
-
