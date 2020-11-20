@@ -8,6 +8,7 @@ from infra.scrapers.match_statistics_scraper import MatchStatisticsScraper
 
 
 def make_league_table_scraper(url):
+    print(BASE_URL + url)
     return LeagueTableScraper(Driver.get_driver(), BASE_URL + url)
 
 
