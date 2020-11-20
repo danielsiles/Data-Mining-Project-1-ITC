@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup as bs
 
-from config import LEAGUE_TABLE_CLASS, LEAGUE_TABLE_ROW_CLASS
+from config import LEAGUE_TABLE_CLASS
 
 
 def get_league_page_html(driver, url):
