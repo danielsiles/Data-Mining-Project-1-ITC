@@ -15,7 +15,7 @@ class MatchStatisticsParser(BaseParser):
         Parse the html element that contains data about the match statistics
         :return: Statistics about the performance of each team in a match
         """
-        soup = bs(self.html, 'html.parser')
+        soup = bs(self._html, 'html.parser')
         home_team = []
         away_team = []
         match_result = soup.find(id=MATCH_STATISTICS_RESULT_ID)\

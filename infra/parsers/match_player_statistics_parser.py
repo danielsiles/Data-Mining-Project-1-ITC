@@ -12,11 +12,10 @@ class MatchPlayerStatisticsParser(BaseParser):
 
     def parse(self):
         """
-            Parse the html element that contains data about the players in a match
-            :param html: Html element scraped to be parsed
-            :return: Statistics about all the players of a match
-            """
-        soup = bs(self.html, 'html.parser')
+        Parse the html element that contains data about the players in a match
+        :return: Statistics about all the players of a match
+        """
+        soup = bs(self._html, 'html.parser')
         home_players = {}
         away_players = {}
 

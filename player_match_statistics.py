@@ -21,22 +21,22 @@ def get_player_match_statistics_page_html(driver, url):
     html = driver.execute_script("return document.documentElement.outerHTML;")
     return html
 
-
-def click_player_match_statistics_tabs(driver, tab_id):
-    """
-    Clicks on all of tabs of id tab_id inside of the page of match_statistics
-    :param driver: driver to click the tabs on the page
-    :param tab_id: The id of the tab in the page to be clicked
-    """
-    driver.find_element_by_id(tab_id).find_element_by_link_text(
-        PLAYER_STATISTICS_OFFENSIVE_TAB_NAME).click()
-    time.sleep(random())
-    driver.find_element_by_id(tab_id).find_element_by_link_text(
-        PLAYER_STATISTICS_DEFENSIVE_TAB_NAME).click()
-    time.sleep(random())
-    driver.find_element_by_id(tab_id).find_element_by_link_text(
-        PLAYER_STATISTICS_PASSING_TAB_NAME).click()
-    time.sleep(3)
+#
+# def click_player_match_statistics_tabs(driver, tab_id):
+#     """
+#     Clicks on all of tabs of id tab_id inside of the page of match_statistics
+#     :param driver: driver to click the tabs on the page
+#     :param tab_id: The id of the tab in the page to be clicked
+#     """
+#     driver.find_element_by_id(tab_id).find_element_by_link_text(
+#         PLAYER_STATISTICS_OFFENSIVE_TAB_NAME).click()
+#     time.sleep(random())
+#     driver.find_element_by_id(tab_id).find_element_by_link_text(
+#         PLAYER_STATISTICS_DEFENSIVE_TAB_NAME).click()
+#     time.sleep(random())
+#     driver.find_element_by_id(tab_id).find_element_by_link_text(
+#         PLAYER_STATISTICS_PASSING_TAB_NAME).click()
+#     time.sleep(3)
 
 
 def parse_player_match_statistics(html):

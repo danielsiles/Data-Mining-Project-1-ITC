@@ -14,7 +14,7 @@ class MatchReportParser(BaseParser):
         Parse the html element that contains data about the match report
         :return: The list of strengths, weaknesses and styles for each team in the match
         """
-        soup = bs(self.html, 'html.parser')
+        soup = bs(self._html, 'html.parser')
         match_summary_table = soup.find("table", class_=MATCH_REPORT_SUMMARY_TABLE_CLASS)
         rows = match_summary_table.find_all('tr')
 

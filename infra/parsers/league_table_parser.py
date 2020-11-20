@@ -14,7 +14,7 @@ class LeagueTableParser(BaseParser):
         Parse the html element that contains data about league table
         :return: The list of teams of a league with all the data with respect to the performance at the league
         """
-        soup = bs(self.html, 'html.parser')
+        soup = bs(self._html, 'html.parser')
         tournament_table = soup.find("div", class_=LEAGUE_TABLE_CLASS)
         league_table_rows = tournament_table.find("tbody", class_=LEAGUE_TABLE_ROW_CLASS)
         tr = []
