@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as bs
 
+from config import MATCH_REPORT_SUMMARY_TABLE_CLASS, MATCH_REPORT_SUMMARY_TABLE_HEADER_CLASS
+
 
 def get_match_report_page_html(driver, url):
     """
@@ -19,7 +21,7 @@ def parse_match_report(html):
     :return: The list of strengths, weaknesses and styles for each team in the match
     """
     soup = bs(html, 'html.parser')
-    match_summary_table = soup.find("table", class_="matchstory")
+    match_summary_table = soup.find("table", class_=MATCH_REPORT_SUMMARY_TABLE_CLASS)
     rows = match_summary_table.find_all('tr')
 
     home_summary = {"strengths": [], "weaknesses": [], "styles": []}
@@ -30,7 +32,7 @@ def parse_match_report(html):
         if index == 0:
             continue
 
-        if row['class'][0] == "matchstory-typeheader":
+        if row['class'][0] == MATCH_REPORT_SUMMARY_TABLE_HEADER_CLASS:
             type_id += 1
             continue
 

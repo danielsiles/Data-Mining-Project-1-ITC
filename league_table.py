@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as bs
 
+from config import LEAGUE_TABLE_CLASS, LEAGUE_TABLE_ROW_CLASS
+
 
 def get_league_page_html(driver, url):
     """
@@ -19,8 +21,8 @@ def parse_league_table_data(html):
     :return: The list of teams of a league with all the data with respect to the performance at the league
     """
     soup = bs(html, 'html.parser')
-    tournament_table = soup.find("div", class_="tournament-standings-table")
-    league_table_rows = tournament_table.find("tbody", class_="standings")
+    tournament_table = soup.find("div", class_=LEAGUE_TABLE_CLASS)
+    league_table_rows = tournament_table.find("tbody", class_=LEAGUE_TABLE_ROW_CLASS)
     tr = []
     for league_table_row in league_table_rows:
         team_infos = league_table_row.find_all('td')

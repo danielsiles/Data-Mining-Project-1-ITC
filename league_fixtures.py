@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup as bs
 
+from config import FIXTURE_TABLE_HEADER, FIXTURE_TABLE_ID, FIXTURE_TABLE_ROW
+
 
 def get_league_fixtures(driver, url):
     """
@@ -19,12 +21,12 @@ def parse_league_fixtures(html):
     :return: The list of matches played or to be played with the date, result and url for details
     """
     soup = bs(html, 'html.parser')
-    table = soup.find(id="tournament-fixture")
-    fixtures = table.find_all("div", class_="divtable-row")
+    table = soup.find(id=FIXTURE_TABLE_ID)
+    fixtures = table.find_all("div", class_=FIXTURE_TABLE_ROW)
     curr_date = ""
     matches = []
     for fixture in fixtures:
-        header = fixture.find(class_="divtable-header")
+        header = fixture.find(class_=FIXTURE_TABLE_HEADER)
         if header is not None:
             curr_date = header.get_text(" ", strip=True)
             continue

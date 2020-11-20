@@ -84,5 +84,3 @@ if __name__ == '__main__':
             raise Exception("Please provide a path to the chromedriver")
     except Exception as e:
         print(f"Invalid input: {e}")
-
-
