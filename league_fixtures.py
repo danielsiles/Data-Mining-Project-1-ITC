@@ -42,4 +42,4 @@ def parse_league_fixtures(html):
     #         "result": curr_link.get_text(" ", strip=True),
     #         "url": curr_link['href']
     #     })
-    return matches
+    # return matches

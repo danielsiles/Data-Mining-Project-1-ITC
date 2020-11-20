@@ -1,3 +1,7 @@
+# Main config
+
+BASE_URL = "https://whoscored.com"
+
 # League Fixtures
 
 FIXTURE_TABLE_ID = "tournament-fixture"

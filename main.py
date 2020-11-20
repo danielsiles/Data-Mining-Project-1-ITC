@@ -2,13 +2,12 @@ import json
 import sys
 from selenium import webdriver
 
+from config import BASE_URL
 from league_fixtures import get_league_fixtures, parse_league_fixtures
 from league_table import get_league_page_html, parse_league_table_data
 from match_report import get_match_report_page_html, parse_match_report
 from match_statistics import get_match_statistics_page_html, parse_match_statistics
 from player_match_statistics import get_player_match_statistics_page_html, parse_player_match_statistics
-
-BASE_URL = "https://whoscored.com"
 
 
 def get_driver(driver_path):
@@ -77,10 +76,4 @@ def main(driver_path):
 
 
 if __name__ == '__main__':
-    try:
-        if len(sys.argv) > 1:
-            main(sys.argv[1])
-        else:
-            raise Exception("Please provide a path to the chromedriver")
-    except Exception as e:
-        print(f"Invalid input: {e}")
+    pass
