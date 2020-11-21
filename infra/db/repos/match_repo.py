@@ -6,4 +6,3 @@ class MatchRepo:
     @staticmethod
     def insert_or_update_match(match):
         db_session.merge(match)
-        db_session.commit()

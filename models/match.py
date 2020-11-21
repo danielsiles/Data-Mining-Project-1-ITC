@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -10,6 +10,8 @@ from models.team import Team
 class Match(BaseModel, Model):
     __tablename__ = 'matches'
     __mapper_args__ = {'column_prefix': '_'}
+    __table_args__ = (UniqueConstraint('url'),)
+
     id = Column('id', Integer, primary_key=True)
     league_id = Column(Integer, ForeignKey('leagues.id'))
     league = relationship("League", back_populates="matches")
@@ -33,6 +35,9 @@ class Match(BaseModel, Model):
         self._league = league
         self._home_team = home_team
         self._away_team = away_team
+        self._league_id = kwargs.get("league_id", 0)
+        self._home_team_id = kwargs.get("home_team_id", 0)
+        self._away_team_id = kwargs.get("away_team_id", 0)
         self._home_goals = kwargs.get("home_goals", None)
         self._away_goals = kwargs.get("away_goals", None)
         self._date = kwargs.get("date", None)

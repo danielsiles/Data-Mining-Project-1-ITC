@@ -35,6 +35,7 @@ class ScrapeLeagueTable(BaseUseCase):
             # TODO Get team ID (somehow)
             league_table_row["team_id"] = 1
             league_table_row["year"] = "2020"
+
             LeagueTableRepo.update_league_table(LeagueTable(league=league, team=Team(1, league=league),
                                                             **league_table_row))
         # Save to database
