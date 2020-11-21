@@ -7,22 +7,21 @@ from infra.scrapers.match_scraper import MatchScraper
 from infra.scrapers.match_statistics_scraper import MatchStatisticsScraper
 
 
-def make_league_table_scraper(url):
-    print(BASE_URL + url)
-    return LeagueTableScraper(Driver.get_driver(), BASE_URL + url)
+def make_league_table_scraper():
+    return LeagueTableScraper(Driver.get_driver())
 
 
-def make_match_player_statistics_scraper(url):
-    return MatchPlayerStatisticsScraper(Driver.get_driver(), BASE_URL + url)
+def make_match_player_statistics_scraper():
+    return MatchPlayerStatisticsScraper(Driver.get_driver())
 
 
-def make_match_report_scraper(url):
-    return MatchReportScraper(Driver.get_driver(), BASE_URL + url)
+def make_match_report_scraper():
+    return MatchReportScraper(Driver.get_driver())
 
 
-def make_match_scraper(url):
-    return MatchScraper(Driver.get_driver(), BASE_URL + url)
+def make_match_scraper():
+    return MatchScraper(Driver.get_driver())
 
 
-def make_match_statistics_scraper(url):
-    return MatchStatisticsScraper(Driver.get_driver(), BASE_URL + url)
+def make_match_statistics_scraper():
+    return MatchStatisticsScraper(Driver.get_driver())

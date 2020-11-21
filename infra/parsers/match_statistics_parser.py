@@ -7,15 +7,12 @@ from config import MATCH_STATISTICS_RESULT_ID, MATCH_STATISTICS_SCORE_CLASS, MAT
 
 class MatchStatisticsParser(BaseParser):
 
-    def __init__(self, html):
-        super().__init__(html)
-
-    def parse(self):
+    def parse(self, html):
         """
         Parse the html element that contains data about the match statistics
         :return: Statistics about the performance of each team in a match
         """
-        soup = bs(self._html, 'html.parser')
+        soup = bs(html, 'html.parser')
         home_team = []
         away_team = []
         match_result = soup.find(id=MATCH_STATISTICS_RESULT_ID)\

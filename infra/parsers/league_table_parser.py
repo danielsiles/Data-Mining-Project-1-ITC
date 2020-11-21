@@ -6,15 +6,12 @@ from config import LEAGUE_TABLE_CLASS, LEAGUE_TABLE_ROW_CLASS
 
 class LeagueTableParser(BaseParser):
 
-    def __init__(self, html):
-        super().__init__(html)
-
-    def parse(self):
+    def parse(self, html):
         """
         Parse the html element that contains data about league table
         :return: The list of teams of a league with all the data with respect to the performance at the league
         """
-        soup = bs(self._html, 'html.parser')
+        soup = bs(html, 'html.parser')
         tournament_table = soup.find("div", class_=LEAGUE_TABLE_CLASS)
         league_table_rows = tournament_table.find("tbody", class_=LEAGUE_TABLE_ROW_CLASS)
         tr = []
@@ -28,9 +25,8 @@ class LeagueTableParser(BaseParser):
                 tr_info.append(team_info.text)
             row_keys = ["team_name", "team_url", "matches_played", "win",
                         "draw", "loss", "goal_for", "goal_against",
-                        "goal_difference", "points"" form"
+                        "goal_difference", "points", "form"
                         ]
 
             tr.append(dict(zip(row_keys, tr_info)))
-
         return tr

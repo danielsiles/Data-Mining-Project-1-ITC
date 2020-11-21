@@ -2,20 +2,20 @@ import time
 from random import random
 
 from config import PLAYER_STATISTICS_HOME_ID, PLAYER_STATISTICS_AWAY_ID, PLAYER_STATISTICS_OFFENSIVE_TAB_NAME, \
-    PLAYER_STATISTICS_DEFENSIVE_TAB_NAME, PLAYER_STATISTICS_PASSING_TAB_NAME
+    PLAYER_STATISTICS_DEFENSIVE_TAB_NAME, PLAYER_STATISTICS_PASSING_TAB_NAME, BASE_URL
 from infra.scrapers.base_scraper import BaseScraper
 
 
 class MatchPlayerStatisticsScraper(BaseScraper):
-    def __init__(self, driver, url):
-        super().__init__(driver, url)
+    def __init__(self, driver):
+        super().__init__(driver)
 
-    def scrape(self):
+    def scrape(self, url):
         """
         Get the html page with the player statistics of a match
         :return: Html element scraped by the driver
         """
-        self._driver.get(self._url)
+        self._driver.get(BASE_URL + url)
         self._click_player_match_statistics_tabs(PLAYER_STATISTICS_HOME_ID)
         self._click_player_match_statistics_tabs(PLAYER_STATISTICS_AWAY_ID)
         html = self._driver.execute_script("return document.documentElement.outerHTML;")

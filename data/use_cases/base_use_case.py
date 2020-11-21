@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 
-class BaseParser(ABC):
+class BaseUseCase(ABC):
 
     @abstractmethod
-    def parse(self, html):
+    def execute(self):
         pass

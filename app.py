@@ -1,10 +1,12 @@
 import json
 
+from data.use_cases.scrape_league_matches import ScrapeLeagueMatches
+from data.use_cases.scrape_league_table import ScrapeLeagueTable
 from infra.db.connection import init_db
 from infra.db.seeds.leagues_seed import leagues_seed
-from main.factories.parser.parser_factory import make_league_table_parser
+from main.factories.parser.parser_factory import make_league_table_parser, make_match_parser
 
-from main.factories.scraper.scraper_factory import make_league_table_scraper
+from main.factories.scraper.scraper_factory import make_league_table_scraper, make_match_scraper
 from models.league import League
 from models.league_table import LeagueTable
 from models.match import Match
@@ -38,9 +40,12 @@ def main():
     except Exception:
         raise Exception("Could not connect to database")
 
-    leagues_seed()
+    # leagues_seed()
     # league = get_popular_leagues()[0]
-    # pretty_print(make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse())
+    # make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse()
+    # ScrapeLeagueTable("Premier League", make_league_table_scraper(), make_league_table_parser()).execute()
+    ScrapeLeagueMatches("Premier League", make_match_scraper(), make_match_parser()).execute()
+    # GetLeagueTable("Brasileirão", make_league_table_scraper(), make_league_table_parser()).execute()
     # league_table_html = get_league_page_html(driver, BASE_URL + league['url'])
     # league_table = parse_league_table_data(league_table_html)
     #

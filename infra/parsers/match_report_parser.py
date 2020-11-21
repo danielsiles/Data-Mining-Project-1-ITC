@@ -6,15 +6,12 @@ from config import MATCH_REPORT_SUMMARY_TABLE_CLASS, MATCH_REPORT_SUMMARY_TABLE_
 
 class MatchReportParser(BaseParser):
 
-    def __init__(self, html):
-        super().__init__(html)
-
-    def parse(self):
+    def parse(self, html):
         """
         Parse the html element that contains data about the match report
         :return: The list of strengths, weaknesses and styles for each team in the match
         """
-        soup = bs(self._html, 'html.parser')
+        soup = bs(html, 'html.parser')
         match_summary_table = soup.find("table", class_=MATCH_REPORT_SUMMARY_TABLE_CLASS)
         rows = match_summary_table.find_all('tr')
 
