@@ -3,6 +3,7 @@ import datetime
 from sqlalchemy.exc import IntegrityError
 
 from data.use_cases.base_use_case import BaseUseCase
+from infra.db.connection import db_session
 from infra.db.repos.league_repo import LeagueRepo
 from infra.db.repos.league_table_repo import LeagueTableRepo
 from infra.db.repos.match_repo import MatchRepo
@@ -21,7 +22,7 @@ class ScrapeLeagueMatches(BaseUseCase):
         self.parser = parser
 
     def execute(self):
-        league = LeagueRepo.get_league_by_name(self.league_name)
+        league = LeagueRepo.find_by_name(self.league_name)
         if league is None:
             raise ValueError("The name of the league passed is invalid")
 
@@ -44,8 +45,9 @@ class ScrapeLeagueMatches(BaseUseCase):
             league_match["year"] = "2020"
             try:
                 league_match["date"] = datetime.datetime.strptime(league_match["date"], "%A, %b %d %Y %H:%M")
-                MatchRepo.insert_or_update_match(
+                MatchRepo.insert_or_update(
                     Match(league=league, home_team=Team(1, league=league), away_team=Team(1, league=league),
                           **league_match))
             except IntegrityError:
+                db_session.rollback()
                 print("Match has already been inserted. Continuing...")

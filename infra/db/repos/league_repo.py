@@ -5,5 +5,5 @@ from models.league import League
 class LeagueRepo:
 
     @staticmethod
-    def get_league_by_name(league_name):
+    def find_by_name(league_name):
         return db_session.query(League).filter(League.name == league_name).first()

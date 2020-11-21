@@ -1,5 +1,6 @@
 from infra.db.connection import db_session
 
+
 class LeagueTableRepo:
 
     @staticmethod

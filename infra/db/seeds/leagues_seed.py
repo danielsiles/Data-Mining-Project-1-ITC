@@ -12,5 +12,4 @@ def leagues_seed():
         leagues = json.loads(file.read())
         for league in leagues:
             lg = League(**{"name": league["league_name"], "url": league["url"], "is_popular": True})
-            db_session.add(lg)
-        db_session.commit()
+            db_session.merge(lg)

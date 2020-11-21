@@ -1,8 +1,14 @@
 from infra.db.connection import db_session
+from models.match import Match
 
 
 class MatchRepo:
 
     @staticmethod
-    def insert_or_update_match(match):
+    def find_by_id(match_id):
+        return db_session.query(Match).filter(Match.id == match_id).first()
+
+    @staticmethod
+    def insert_or_update(match):
         db_session.merge(match)
+        db_session.commit()

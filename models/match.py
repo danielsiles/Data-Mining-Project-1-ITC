@@ -44,3 +44,9 @@ class Match(BaseModel, Model):
         self._goals_home = kwargs.get("goals_home", 0)
         self._goals_away = kwargs.get("goals_away", 0)
         self._url = kwargs.get("url", "")
+
+    def get_url(self):
+        return self._url
+
+    def get_id(self):
+        return self._id
