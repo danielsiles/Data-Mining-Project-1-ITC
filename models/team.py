@@ -11,8 +11,16 @@ class Team(BaseModel, Model):
     id = Column('id', Integer, primary_key=True)
     name = Column('name', String(200))
     league_id = Column(Integer, ForeignKey('leagues.id'))
-    league = relationship("League", back_populates="teams")
+    league = relationship("League")
+    table = relationship("LeagueTable")
+    players = relationship("Player")
+    matches = relationship("Match", primaryjoin="Team.id == Match.away_team_id")
+    matche = relationship("Match", primaryjoin="Team.id == Match.home_team_id")
     url = Column('is_popular', String(255))
+
+    match_player_statistics = relationship("MatchPlayerStatistics")
+    match_reports = relationship("MatchReport")
+    match_statistics = relationship("MatchStatistics")
 
     def __init__(self, team_id, league: League, **kwargs):
         super().__init__(team_id)

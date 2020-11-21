@@ -13,13 +13,17 @@ class Match(BaseModel, Model):
     league_id = Column(Integer, ForeignKey('leagues.id'))
     league = relationship("League", back_populates="matches")
     home_team_id = Column(Integer, ForeignKey('teams.id'))
-    home_team = relationship("Team", back_populates="matches")
+    home_team = relationship("Team", back_populates="matches", primaryjoin="Team.id == Match.home_team_id")
     away_team_id = Column(Integer, ForeignKey('teams.id'))
-    away_team = relationship("Team", back_populates="matches")
+    away_team = relationship("Team", back_populates="matches", primaryjoin="Team.id == Match.away_team_id")
     date = Column("date", DateTime())
     goals_home = Column("goals_home", Integer)
     goals_away = Column("goals_away", Integer)
     url = Column("url", String(255))
+
+    match_player_statistics = relationship("MatchPlayerStatistics")
+    match_reports = relationship("MatchReport")
+    match_statistics = relationship("MatchStatistics")
 
     def __init__(self, match_id, league: League, home_team: Team, away_team: Team, **kwargs):
         super().__init__(match_id)

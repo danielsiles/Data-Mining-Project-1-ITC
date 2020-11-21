@@ -11,9 +11,9 @@ class LeagueTable(BaseModel, Model):
     __tablename__ = 'tables'
     id = Column('id', Integer, primary_key=True)
     league_id = Column(Integer, ForeignKey('leagues.id'))
-    league = relationship("League", back_populates="tables")
+    league = relationship("League", back_populates="table")
     team_id = Column(Integer, ForeignKey('teams.id'))
-    team = relationship("Team", back_populates="tables")
+    team = relationship("Team", back_populates="table")
     year = Column("year", String(100))
     matches_played = Column("matches_played", Integer)
     win = Column("win", Integer)

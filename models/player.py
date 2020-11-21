@@ -14,6 +14,7 @@ class Player(BaseModel, Model):
     name = Column("name", String(255))
     nationality = Column("nationality", String(255))
     position = Column("position", String(255))
+    match_player_statistics = relationship("MatchPlayerStatistics")
 
     def __init__(self, player_id, team: Team, name, nationality, position):
         super().__init__(player_id)
