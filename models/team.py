@@ -8,6 +8,7 @@ from models.league import League
 
 class Team(BaseModel, Model):
     __tablename__ = 'teams'
+    __mapper_args__ = {'column_prefix': '_'}
     id = Column('id', Integer, primary_key=True)
     name = Column('name', String(200))
     league_id = Column(Integer, ForeignKey('leagues.id'))
@@ -22,8 +23,8 @@ class Team(BaseModel, Model):
     match_reports = relationship("MatchReport")
     match_statistics = relationship("MatchStatistics")
 
-    def __init__(self, team_id, league: League, **kwargs):
-        super().__init__(team_id)
+    def __init__(self, *args, league: League, **kwargs):
+        super().__init__(*args)
         self._league: League = league
         self._name = kwargs.get("name")
         self._url = kwargs.get("url")

@@ -10,6 +10,7 @@ from models.team import Team
 
 class MatchReport(BaseModel, Model):
     __tablename__ = 'match_reports'
+    __mapper_args__ = {'column_prefix': '_'}
     id = Column('id', Integer, primary_key=True)
     match_id = Column(Integer, ForeignKey('matches.id'))
     match = relationship("Match", back_populates="match_reports")
@@ -18,8 +19,8 @@ class MatchReport(BaseModel, Model):
     report = Column("report", String(255))
     type = Column("type", String(255))
 
-    def __init__(self, match_report_id, match: Match, team: Team, report, report_type):
-        super().__init__(match_report_id)
+    def __init__(self, *args, match: Match, team: Team, report, report_type):
+        super().__init__(*args)
         self._match = match
         self._team = team
         self._report = report

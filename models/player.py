@@ -8,6 +8,7 @@ from models.team import Team
 
 class Player(BaseModel, Model):
     __tablename__ = 'players'
+    __mapper_args__ = {'column_prefix': '_'}
     id = Column('id', Integer, primary_key=True)
     team_id = Column(Integer, ForeignKey('teams.id'))
     team = relationship("Team", back_populates="players")
@@ -16,8 +17,8 @@ class Player(BaseModel, Model):
     position = Column("position", String(255))
     match_player_statistics = relationship("MatchPlayerStatistics")
 
-    def __init__(self, player_id, team: Team, name, nationality, position):
-        super().__init__(player_id)
+    def __init__(self, *args, team: Team, name, nationality, position):
+        super().__init__(*args)
         self._team = team
         self._name = name
         self._nationality = nationality

@@ -9,6 +9,7 @@ from models.team import Team
 
 class LeagueTable(BaseModel, Model):
     __tablename__ = 'tables'
+    __mapper_args__ = {'column_prefix': '_'}
     id = Column('id', Integer, primary_key=True)
     league_id = Column(Integer, ForeignKey('leagues.id'))
     league = relationship("League", back_populates="table")
@@ -24,8 +25,8 @@ class LeagueTable(BaseModel, Model):
     goal_difference = Column("goal_difference", Integer)
     points = Column("points", Integer)
 
-    def __init__(self, league_table_id, league: League, team: Team, year, **kwargs):
-        super().__init__(league_table_id)
+    def __init__(self, *args, league: League, team: Team, year, **kwargs):
+        super().__init__(*args)
         self._league = league
         self._team = team
         self._year = year
