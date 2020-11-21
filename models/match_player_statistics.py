@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -42,6 +42,8 @@ class MatchPlayerStatistics(BaseModel, Model):
     long_ball_success = Column("long_ball_success", Integer)
     through_ball = Column("through_ball", Integer)
     through_ball_success = Column("through_ball_success", Integer)
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
 
     def __init__(self, *args, match: Match, team: Team, player: Player, **kwargs):
         super().__init__(*args)

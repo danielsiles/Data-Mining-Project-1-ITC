@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Integer, Column, String, Boolean
+from sqlalchemy import Integer, Column, String, Boolean, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -17,6 +17,8 @@ class League(BaseModel, Model):
     teams = relationship("Team", back_populates="league")
     table = relationship("LeagueTable", back_populates="league")
     matches = relationship("Match", back_populates="league")
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args)

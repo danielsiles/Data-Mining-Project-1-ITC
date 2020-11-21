@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -18,6 +18,8 @@ class MatchReport(BaseModel, Model):
     team = relationship("Team", back_populates="match_reports")
     report = Column("report", String(255))
     type = Column("type", String(255))
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
 
     def __init__(self, *args, match: Match, team: Team, report, report_type):
         super().__init__(*args)

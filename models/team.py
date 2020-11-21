@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -15,9 +15,11 @@ class Team(BaseModel, Model):
     league = relationship("League")
     table = relationship("LeagueTable")
     players = relationship("Player")
-    matches = relationship("Match", primaryjoin="Team.id == Match.away_team_id")
-    matche = relationship("Match", primaryjoin="Team.id == Match.home_team_id")
+    matches = relationship("Match", primaryjoin="Team._id == Match._away_team_id")
+    matche = relationship("Match", primaryjoin="Team._id == Match._home_team_id")
     url = Column('is_popular', String(255))
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
 
     match_player_statistics = relationship("MatchPlayerStatistics")
     match_reports = relationship("MatchReport")

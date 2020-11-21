@@ -11,7 +11,6 @@ def leagues_seed():
     with open("popular_leagues.json", "r") as file:
         leagues = json.loads(file.read())
         for league in leagues:
-            # print(league)
             lg = League(**{"name": league["league_name"], "url": league["url"], "is_popular": True})
             db_session.add(lg)
         db_session.commit()

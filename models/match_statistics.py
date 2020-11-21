@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -24,6 +24,8 @@ class MatchStatistics(BaseModel, Model):
     tackles = Column("tackles", Integer)
     corners = Column("corners", Integer)
     dispossessed = Column("dispossessed", Integer)
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
 
     def __init__(self, *args, match: Match, team: Team, **kwargs):
         super().__init__(*args)

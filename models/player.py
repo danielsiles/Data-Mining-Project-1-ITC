@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -15,6 +15,9 @@ class Player(BaseModel, Model):
     name = Column("name", String(255))
     nationality = Column("nationality", String(255))
     position = Column("position", String(255))
+    created_at = Column('created_at', DateTime())
+    updated_at = Column('updated_at', DateTime())
+
     match_player_statistics = relationship("MatchPlayerStatistics")
 
     def __init__(self, *args, team: Team, name, nationality, position):
