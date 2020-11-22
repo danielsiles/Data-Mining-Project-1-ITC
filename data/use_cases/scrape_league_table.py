@@ -1,12 +1,10 @@
-from abc import ABC
-
 from data.use_cases.base_use_case import BaseUseCase
 from infra.db.repos.league_repo import LeagueRepo
 from infra.db.repos.league_table_repo import LeagueTableRepo
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
-from models.league_table import LeagueTable
-from models.team import Team
+from domain.models.league_table import LeagueTable
+from domain.models.team import Team
 
 
 class ScrapeLeagueTable(BaseUseCase):

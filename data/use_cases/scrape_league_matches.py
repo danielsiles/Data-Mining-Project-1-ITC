@@ -5,13 +5,11 @@ from sqlalchemy.exc import IntegrityError
 from data.use_cases.base_use_case import BaseUseCase
 from infra.db.connection import db_session
 from infra.db.repos.league_repo import LeagueRepo
-from infra.db.repos.league_table_repo import LeagueTableRepo
 from infra.db.repos.match_repo import MatchRepo
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
-from models.league_table import LeagueTable
-from models.match import Match
-from models.team import Team
+from domain.models.match import Match
+from domain.models.team import Team
 
 
 class ScrapeLeagueMatches(BaseUseCase):

@@ -1,5 +1,5 @@
 from infra.db.connection import db_session
-from models.league import League
+from domain.models.league import League
 
 
 class LeagueRepo:

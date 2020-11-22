@@ -2,8 +2,8 @@ from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
-from models.base_model import BaseModel
-from models.team import Team
+from domain.models.base_model import BaseModel
+from domain.models.team import Team
 
 
 class Player(BaseModel, Model):

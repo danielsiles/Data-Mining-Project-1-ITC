@@ -1,5 +1,5 @@
 from infra.db.connection import db_session
-from models.match import Match
+from domain.models.match import Match
 
 
 class MatchRepo:

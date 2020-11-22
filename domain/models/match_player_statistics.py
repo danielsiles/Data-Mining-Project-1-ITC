@@ -2,10 +2,10 @@ from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
-from models.base_model import BaseModel
-from models.match import Match
-from models.player import Player
-from models.team import Team
+from domain.models.base_model import BaseModel
+from domain.models.match import Match
+from domain.models.player import Player
+from domain.models.team import Team
 
 
 class MatchPlayerStatistics(BaseModel, Model):

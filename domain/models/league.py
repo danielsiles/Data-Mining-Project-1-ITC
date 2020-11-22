@@ -1,10 +1,8 @@
-import datetime
-
 from sqlalchemy import Integer, Column, String, Boolean, DateTime
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
-from models.base_model import BaseModel
+from domain.models.base_model import BaseModel
 
 
 class League(BaseModel, Model):

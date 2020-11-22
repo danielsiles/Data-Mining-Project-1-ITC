@@ -2,9 +2,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, UniqueCons
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
-from models.base_model import BaseModel
-from models.league import League
-from models.team import Team
+from domain.models.base_model import BaseModel
+from domain.models.league import League
+from domain.models.team import Team
 
 
 class LeagueTable(BaseModel, Model):

@@ -1,15 +1,16 @@
-from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
-from models.base_model import BaseModel
-from models.match import Match
-from models.team import Team
+from domain.models.base_model import BaseModel
+from domain.models.match import Match
+from domain.models.team import Team
 
 
 class MatchStatistics(BaseModel, Model):
     __tablename__ = 'match_statistics'
     __mapper_args__ = {'column_prefix': '_'}
+    __table_args__ = (UniqueConstraint('match_id', 'team_id'),)
     id = Column('id', Integer, primary_key=True)
     match_id = Column(Integer, ForeignKey('matches.id'))
     match = relationship("Match", back_populates="match_statistics")
@@ -27,10 +28,12 @@ class MatchStatistics(BaseModel, Model):
     created_at = Column('created_at', DateTime())
     updated_at = Column('updated_at', DateTime())
 
-    def __init__(self, *args, match: Match, team: Team, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args)
-        self._match = match
-        self._team = team
+        self._match: Match = kwargs.get("match", 0)
+        self._team: Team = kwargs.get("team", 0)
+        self._match_id = kwargs.get("match_id", 0)
+        self._team_id = kwargs.get("team_id", 0)
         self._goals = kwargs.get("goals", 0)
         self._ratings = kwargs.get("ratings", 0)
         self._possession = kwargs.get("possession", 0)
