@@ -28,5 +28,12 @@ class Team(BaseModel, Model):
     def __init__(self, *args, league: League, **kwargs):
         super().__init__(*args)
         self._league: League = league
+        self._league_id = kwargs.get("league_id")
         self._name = kwargs.get("name")
         self._url = kwargs.get("url")
+
+    def get_id(self):
+        return self._id
+
+    def __str__(self):
+        return str(self.__dict__)
