@@ -20,9 +20,13 @@ class Player(BaseModel, Model):
 
     match_player_statistics = relationship("MatchPlayerStatistics")
 
-    def __init__(self, *args, team: Team, name, nationality, position):
+    def __init__(self, *args, team: Team, **kwargs):
         super().__init__(*args)
         self._team = team
-        self._name = name
-        self._nationality = nationality
-        self._position = position
+        self._team_id = kwargs.get("team_id")
+        self._name = kwargs.get("name")
+        self._nationality = kwargs.get("nationality")
+        self._position = kwargs.get("position")
+
+    def get_id(self):
+        return self._id

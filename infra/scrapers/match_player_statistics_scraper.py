@@ -1,5 +1,9 @@
 import time
 from random import random
+from telnetlib import EC
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 from config import PLAYER_STATISTICS_HOME_ID, PLAYER_STATISTICS_AWAY_ID, PLAYER_STATISTICS_OFFENSIVE_TAB_NAME, \
     PLAYER_STATISTICS_DEFENSIVE_TAB_NAME, PLAYER_STATISTICS_PASSING_TAB_NAME, BASE_URL
@@ -16,8 +20,15 @@ class MatchPlayerStatisticsScraper(BaseScraper):
         :return: Html element scraped by the driver
         """
         self._driver.get(BASE_URL + url)
-        self._click_player_match_statistics_tabs(PLAYER_STATISTICS_HOME_ID)
-        self._click_player_match_statistics_tabs(PLAYER_STATISTICS_AWAY_ID)
+        # self._click_player_match_statistics_tabs(PLAYER_STATISTICS_HOME_ID)
+        # self._click_player_match_statistics_tabs(PLAYER_STATISTICS_AWAY_ID)
+        try:
+            element = WebDriverWait(self._driver, 10).until(
+                EC.presence_of_element_located((By.ID, "player-table-statistics-body"))
+            )
+            print(element)
+        except Exception as e:
+            print(e)
         html = self._driver.execute_script("return document.documentElement.outerHTML;")
         return html
 

@@ -17,9 +17,9 @@ class MatchPlayerStatisticsParser(BaseParser):
         away_players = {}
 
         types = ["home", "away"]
-        type_ids = ["summary", "offensive",
-                    "defensive", "passing"]
-
+        # type_ids = ["summary", "offensive",
+        #             "defensive", "passing"]
+        type_ids = ["summary"]
         summary_keys = ["player_name", "shots", "shots_on_target", "key_passes", "pass_success", "aerials_won",
                         "touches",
                         "rating"]
@@ -31,7 +31,8 @@ class MatchPlayerStatisticsParser(BaseParser):
                         "long_ball_success", "through_ball", "through_ball_success"]
 
         data = {"home": home_players, "away": away_players}
-        keys = dict(zip(type_ids, [summary_keys, offensive_keys, defensive_keys, passing_keys]))
+        # keys = dict(zip(type_ids, [summary_keys, offensive_keys, defensive_keys, passing_keys]))
+        keys = dict(zip(type_ids, [summary_keys]))
         for tp in types:
             for type_id in type_ids:
                 table = soup.find(id=f"live-player-{tp}-stats").find(id=f"live-player-{tp}-{type_id}").find(
@@ -49,12 +50,8 @@ class MatchPlayerStatisticsParser(BaseParser):
                         if p_index == 1:
                             continue
                         players.append(player_stat)
-
                     if players[0] not in data[tp]:
                         data[tp][players[0]] = {}
-                    else:
-                        data[tp][players[0]].update(dict(zip(keys[type_id], players[1:])))
-
-                    print(data)
+                    data[tp][players[0]].update(dict(zip(keys[type_id], players[1:])))
 
         return data
