@@ -1,10 +1,13 @@
+from data.protocols.db.base_match_player_statistics_repo import BaseMatchPlayerStatisticsRepo
 from domain.models.match_player_statistics import MatchPlayerStatistics
-from infra.db.connection import db_session
+from infra.db.connection import DBConnection
 
 
-class MatchPlayerStatisticsRepo:
+class MatchPlayerStatisticsRepo(BaseMatchPlayerStatisticsRepo):
 
-    @staticmethod
-    def create(match_player_statistics: MatchPlayerStatistics):
-        db_session.merge(match_player_statistics)
-        db_session.commit()
+    def __init__(self):
+        super().__init__(DBConnection.get_db_session())
+
+    def create(self, match_player_statistics: MatchPlayerStatistics):
+        self._db_session.merge(match_player_statistics)
+        self._db_session.commit()

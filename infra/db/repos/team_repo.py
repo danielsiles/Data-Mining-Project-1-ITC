@@ -1,21 +1,21 @@
-from sqlalchemy import insert, inspect
-
+from data.protocols.db.base_team_repo import BaseTeamRepo
 from domain.models.team import Team
-from infra.db.connection import db_session
+from infra.db.connection import DBConnection
 
 
-class TeamRepo:
+class TeamRepo(BaseTeamRepo):
 
-    @staticmethod
-    def insert_or_update(team: Team):
-        team = db_session.merge(team)
-        db_session.commit()
-        db_session.flush()
-        db_session.refresh(team)
+    def __init__(self):
+        super().__init__(DBConnection.get_db_session())
+
+    def insert_or_update(self, team: Team):
+        team = self._db_session.merge(team)
+        self._db_session.commit()
+        self._db_session.flush()
+        self._db_session.refresh(team)
         return team
 
-    @staticmethod
-    def find_by_name(league_id, name):
-        return db_session.query(Team).filter(Team.league_id == league_id).filter(Team.name == name).first()
+    def find_by_name(self, league_id, name):
+        return self._db_session.query(Team).filter(Team.league_id == league_id).filter(Team.name == name).first()
 
 

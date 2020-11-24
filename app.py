@@ -11,11 +11,11 @@ from domain.models.match_statistics import MatchStatistics
 from domain.models.league import League
 from domain.models.player import Player
 from domain.models.team import Team
-from infra.db.connection import init_db
 from main.factories.parser.parser_factory import make_match_statistics_parser, make_league_table_parser, \
     make_match_player_statistics_parser
 from main.factories.scraper.scraper_factory import make_match_statistics_scraper, make_league_table_scraper, \
     make_match_player_statistics_scraper
+from main.factories.use_cases.use_cases_factory import make_scrape_league_table_use_case
 
 
 def get_popular_leagues():
@@ -36,10 +36,10 @@ def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
-    try:
-        init_db()
-    except Exception:
-        raise Exception("Could not connect to database")
+    # try:
+    #     # init_db()
+    # except Exception:
+    #     raise Exception("Could not connect to database")
 
     # LeagueTable()
     # Match()
@@ -52,9 +52,10 @@ def main():
     # leagues_seed()
     # league = get_popular_leagues()[0]
     # make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse()
+    make_scrape_league_table_use_case("Premier League").execute()
     # ScrapeLeagueTable("Premier League", make_league_table_scraper(), make_league_table_parser()).execute()
-    ScrapeMatchPlayerStatistics(2, make_match_player_statistics_scraper(), make_match_player_statistics_parser())\
-        .execute()
+    # ScrapeMatchPlayerStatistics(2, make_match_player_statistics_scraper(), make_match_player_statistics_parser())\
+    #     .execute()
     # ScrapeLeagueMatches("Premier League", make_match_scraper(), make_match_parser()).execute()
     # ScrapeMatchReport(2, make_match_report_scraper(), make_match_report_parser()).execute()
     # ScrapeMatchStatistics(2, make_match_statistics_scraper(), make_match_statistics_parser()).execute()

@@ -1,13 +1,13 @@
-from infra.db.connection import db_session
+from data.protocols.db.base_match_report_repo import BaseMatchReportRepo
 from domain.models.match_report import MatchReport
+from infra.db.connection import DBConnection
 
 
-class MatchReportRepo:
+class MatchReportRepo(BaseMatchReportRepo):
 
-    def __init__(self, db_session):
-        self.db_session = db_session
+    def __init__(self):
+        super().__init__(DBConnection.get_db_session())
 
-    @staticmethod
-    def create(match_report: MatchReport):
-        db_session.merge(match_report)
-        db_session.commit()
+    def create(self, match_report: MatchReport):
+        self._db_session.merge(match_report)
+        self._db_session.commit()

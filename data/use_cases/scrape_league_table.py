@@ -1,5 +1,8 @@
 from sqlalchemy.exc import IntegrityError
 
+from data.protocols.db.base_league_repo import BaseLeagueRepo
+from data.protocols.db.base_league_table_repo import BaseLeagueTableRepo
+from data.protocols.db.base_team_repo import BaseTeamRepo
 from data.use_cases.base_use_case import BaseUseCase
 from infra.db.repos.league_repo import LeagueRepo
 from infra.db.repos.league_table_repo import LeagueTableRepo
@@ -12,13 +15,18 @@ from domain.models.team import Team
 
 class ScrapeLeagueTable(BaseUseCase):
 
-    def __init__(self, league_name, scraper: BaseScraper, parser: BaseParser):
+    def __init__(self, league_name, scraper: BaseScraper, parser: BaseParser,
+                 league_repository: BaseLeagueRepo, team_repository: BaseTeamRepo,
+                 league_table_repository: BaseLeagueTableRepo):
         self.league_name = league_name
         self.scraper = scraper
         self.parser = parser
+        self.league_repository = league_repository
+        self.team_repository = team_repository
+        self.league_table_repository = league_table_repository
 
     def execute(self):
-        league = LeagueRepo.find_by_name(self.league_name)
+        league = self.league_repository.find_by_name(self.league_name)
         if league is None:
             raise ValueError("The name of the league passed is invalid")
         try:
@@ -32,10 +40,10 @@ class ScrapeLeagueTable(BaseUseCase):
         print(league_table_rows)
         for league_table_row in league_table_rows:
             league_table_row["league_id"] = league.get_id()
-            team = TeamRepo.find_by_name(league.get_id(), league_table_row["team_name"])
+            team = self.team_repository.find_by_name(league.get_id(), league_table_row["team_name"])
             if team is None:
                 try:
-                    team = TeamRepo.insert_or_update(Team(league=league, **{
+                    team = self.team_repository.insert_or_update(Team(league=league, **{
                         "name": league_table_row["team_name"],
                         "league_id": league_table_row["league_id"],
                         "url": league_table_row["team_url"]
@@ -46,4 +54,4 @@ class ScrapeLeagueTable(BaseUseCase):
             league_table_row["team_id"] = team.get_id()
             league_table_row["year"] = "2020"
 
-            LeagueTableRepo.update_league_table(LeagueTable(league=league, team=team, **league_table_row))
+            self.league_table_repository.update_league_table(LeagueTable(league=league, team=team, **league_table_row))

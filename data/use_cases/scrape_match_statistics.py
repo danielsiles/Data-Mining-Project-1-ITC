@@ -1,25 +1,25 @@
 from sqlalchemy.exc import IntegrityError
 
+from data.protocols.db.base_match_repo import BaseMatchRepo
+from data.protocols.db.base_match_statistics_repo import BaseMatchStatisticsRepo
 from data.use_cases.base_use_case import BaseUseCase
 from domain.models.match_statistics import MatchStatistics
-from infra.db.connection import db_session
-from infra.db.repos.match_repo import MatchRepo
-from infra.db.repos.match_report_repo import MatchReportRepo
-from infra.db.repos.match_statistics_repo import MatchStatisticsRepo
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
-from domain.models.match_report import MatchReport
 
 
 class ScrapeMatchStatistics(BaseUseCase):
 
-    def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser):
+    def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
+                 match_repository: BaseMatchRepo,match_statistics_repository: BaseMatchStatisticsRepo):
         self.match_id = match_id
         self.scraper = scraper
         self.parser = parser
+        self.match_repository = match_repository
+        self.match_statistics_repository = match_statistics_repository
 
     def execute(self):
-        match = MatchRepo.find_by_id(self.match_id)
+        match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
         try:
@@ -38,7 +38,7 @@ class ScrapeMatchStatistics(BaseUseCase):
         try:
             team_summary["match_id"] = match.get_id()
             team_summary["team_id"] = match._home_team_id
-            MatchStatisticsRepo.create(MatchStatistics(**team_summary))
+            self.match_statistics_repository.create(MatchStatistics(**team_summary))
         except IntegrityError:
-            db_session.rollback()
+            # db_session.rollback()
             print("This match report already exists. Continuing...")

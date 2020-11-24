@@ -1,12 +1,14 @@
 from sqlalchemy.exc import IntegrityError
 
+from data.protocols.db.base_match_player_statistics_repo import BaseMatchPlayerStatisticsRepo
+from data.protocols.db.base_match_repo import BaseMatchRepo
+from data.protocols.db.base_player_repo import BasePlayerRepo
 from data.use_cases.base_use_case import BaseUseCase
 from domain.models.league import League
 from domain.models.match_player_statistics import MatchPlayerStatistics
 from domain.models.match_statistics import MatchStatistics
 from domain.models.player import Player
 from domain.models.team import Team
-from infra.db.connection import db_session
 from infra.db.repos.match_player_statistics_repo import MatchPlayerStatisticsRepo
 from infra.db.repos.match_repo import MatchRepo
 from infra.db.repos.match_report_repo import MatchReportRepo
@@ -19,14 +21,20 @@ from domain.models.match_report import MatchReport
 
 class ScrapeMatchPlayerStatistics(BaseUseCase):
 
-    def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser):
+    def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
+                 match_repository: BaseMatchRepo, player_repository: BasePlayerRepo,
+                 match_player_statistics_repo: BaseMatchPlayerStatisticsRepo):
         self.match_id = match_id
         self.scraper = scraper
         self.parser = parser
+        self.match_repository = match_repository
+        self.player_repository = player_repository
+        self.match_player_statistics_repo = match_player_statistics_repo
+
 
     def execute(self):
         # TODO Check date of the match if is already finished
-        match = MatchRepo.find_by_id(self.match_id)
+        match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
         try:
@@ -51,10 +59,10 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
                 player_summary["team_id"] = team_id
                 if player_summary["rating"] == "-":
                     player_summary["rating"] = None
-                player = PlayerRepo.find_by_name(team_id, player_summary["player_name"])
+                player = self.player_repository.find_by_name(team_id, player_summary["player_name"])
                 if player is None:
                     try:
-                        player = PlayerRepo.insert_or_update(Player(team=Team(league=League(1)), **{
+                        player = self.player_repository.insert_or_update(Player(team=Team(league=League(1)), **{
                             "name": player_summary["player_name"],
                             "team_id": team_id
                         }))
@@ -62,12 +70,12 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
                         raise Exception("Could not update league table because team was not found")
                 player_summary["player_id"] = player.get_id()
 
-                MatchPlayerStatisticsRepo.create(MatchPlayerStatistics(
+                self.match_player_statistics_repo.create(MatchPlayerStatistics(
                     match=match,
                     team=team_id,
                     player=player,
                     **player_summary)
                 )
             except IntegrityError:
-                db_session.rollback()
+                # db_session.rollback()
                 print("This match player statistics already exists. Continuing...")
