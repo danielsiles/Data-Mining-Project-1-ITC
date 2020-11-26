@@ -20,8 +20,8 @@ class Match(BaseModel, Model):
     away_team_id = Column(Integer, ForeignKey('teams.id'))
     away_team = relationship("Team", back_populates="matches", primaryjoin="Team._id == Match._away_team_id")
     date = Column("date", DateTime())
-    home_goals = Column("home_goals", Integer)
-    away_goals = Column("away_goals", Integer)
+    home_goals = Column("home_goals", Integer())
+    away_goals = Column("away_goals", Integer())
     url = Column("url", String(255))
     created_at = Column('created_at', DateTime())
     updated_at = Column('updated_at', DateTime())
@@ -41,8 +41,6 @@ class Match(BaseModel, Model):
         self._home_goals = kwargs.get("home_goals", None)
         self._away_goals = kwargs.get("away_goals", None)
         self._date = kwargs.get("date", None)
-        self._goals_home = kwargs.get("goals_home", 0)
-        self._goals_away = kwargs.get("goals_away", 0)
         self._url = kwargs.get("url", "")
 
     def get_url(self):
@@ -50,3 +48,18 @@ class Match(BaseModel, Model):
 
     def get_id(self):
         return self._id
+
+    def get_home_goals(self):
+        return self._home_goals
+
+    def get_away_goals(self):
+        return self._away_goals
+
+    def get_home_team_id(self):
+        return self._home_team_id
+
+    def get_away_team_id(self):
+        return self._away_team_id
+
+    def get_date(self):
+        return self._date

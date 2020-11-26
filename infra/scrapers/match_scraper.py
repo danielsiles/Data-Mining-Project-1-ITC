@@ -13,3 +13,5 @@ class MatchScraper(BaseScraper):
         """
         self._driver.get(BASE_URL + url)
         return self._driver.execute_script("return document.documentElement.outerHTML;")
+
+

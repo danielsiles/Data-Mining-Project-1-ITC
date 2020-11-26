@@ -34,7 +34,7 @@ class ScrapeLeagueTable(BaseUseCase):
         except Exception:
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
 
-        league_table_rows = self.parser.parse(html)
+        league_table_rows, league_year = self.parser.parse(html)
         if league_table_rows is None or len(league_table_rows) == 0:
             raise ValueError("Could not parse HTML")
         print(league_table_rows)
@@ -52,6 +52,6 @@ class ScrapeLeagueTable(BaseUseCase):
                     raise Exception("Could not update league table because team was not found")
 
             league_table_row["team_id"] = team.get_id()
-            league_table_row["year"] = "2020"
+            league_table_row["year"] = league_year
 
             self.league_table_repository.update_league_table(LeagueTable(league=league, team=team, **league_table_row))

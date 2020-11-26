@@ -3,7 +3,6 @@ from data.use_cases.scrape_league_table import ScrapeLeagueTable
 from data.use_cases.scrape_match_player_statistics import ScrapeMatchPlayerStatistics
 from data.use_cases.scrape_match_report import ScrapeMatchReport
 from data.use_cases.scrape_match_statistics import ScrapeMatchStatistics
-from infra.db.connection import DBConnection
 from infra.db.repos.league_repo import LeagueRepo
 from infra.db.repos.league_table_repo import LeagueTableRepo
 from infra.db.repos.match_player_statistics_repo import MatchPlayerStatisticsRepo
@@ -20,7 +19,7 @@ from main.factories.scraper.scraper_factory import make_match_scraper, make_leag
 
 def make_scrape_league_matches_use_case(league_name):
     return ScrapeLeagueMatches(league_name, make_match_scraper(), make_match_parser(),
-                               LeagueRepo(), MatchRepo())
+                               LeagueRepo(), MatchRepo(), TeamRepo())
 
 
 def make_scrape_league_table_use_case(league_name):

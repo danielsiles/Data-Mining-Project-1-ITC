@@ -10,6 +10,7 @@ FIXTURE_TABLE_HEADER = "divtable-header"
 
 # League table
 
+LEAGUE_YEAR_ID = "seasons"
 LEAGUE_TABLE_CLASS = "tournament-standings-table"
 LEAGUE_TABLE_ROW_CLASS = "standings"
 

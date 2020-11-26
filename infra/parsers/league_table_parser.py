@@ -1,7 +1,7 @@
 from infra.parsers.base_parser import BaseParser
 from bs4 import BeautifulSoup as bs
 
-from config import LEAGUE_TABLE_CLASS, LEAGUE_TABLE_ROW_CLASS
+from config import LEAGUE_TABLE_CLASS, LEAGUE_TABLE_ROW_CLASS, LEAGUE_YEAR_ID
 
 
 class LeagueTableParser(BaseParser):
@@ -12,6 +12,7 @@ class LeagueTableParser(BaseParser):
         :return: The list of teams of a league with all the data with respect to the performance at the league
         """
         soup = bs(html, 'html.parser')
+        league_year = soup.find('select', id=LEAGUE_YEAR_ID).find("option").get_text(" ")
         tournament_table = soup.find("div", class_=LEAGUE_TABLE_CLASS)
         league_table_rows = tournament_table.find("tbody", class_=LEAGUE_TABLE_ROW_CLASS)
         tr = []
@@ -29,4 +30,4 @@ class LeagueTableParser(BaseParser):
                         ]
 
             tr.append(dict(zip(row_keys, tr_info)))
-        return tr
+        return tr, league_year

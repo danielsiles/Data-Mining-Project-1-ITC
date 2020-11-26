@@ -4,6 +4,7 @@ from sqlalchemy.exc import IntegrityError
 
 from data.protocols.db.base_league_repo import BaseLeagueRepo
 from data.protocols.db.base_match_repo import BaseMatchRepo
+from data.protocols.db.base_team_repo import BaseTeamRepo
 from data.use_cases.base_use_case import BaseUseCase
 from infra.db.connection import DBConnection
 from infra.db.repos import league_repo
@@ -16,12 +17,16 @@ from domain.models.team import Team
 
 class ScrapeLeagueMatches(BaseUseCase):
 
-    def __init__(self, league_name, scraper: BaseScraper, parser: BaseParser, league_repository: BaseLeagueRepo, match_repository: BaseMatchRepo):
+    def __init__(self, league_name, scraper: BaseScraper, parser: BaseParser,
+                 league_repository: BaseLeagueRepo, match_repository: BaseMatchRepo,
+                 team_repository: BaseTeamRepo):
         self.league_name = league_name
         self.scraper = scraper
         self.parser = parser
         self.league_repository = league_repository
         self.match_repository = match_repository
+        self.team_repository = team_repository
+
 
     def execute(self):
         league = self.league_repository.find_by_name(self.league_name)
@@ -40,8 +45,10 @@ class ScrapeLeagueMatches(BaseUseCase):
             raise ValueError("Could not parse HTML")
         for league_match in league_matches:
             league_match["league_id"] = league.get_id()
-            league_match["home_team_id"] = 1
-            league_match["away_team_id"] = 1
+            league_match["home_team_id"] = self.team_repository.find_by_name(league.get_id(),
+                                                                             league_match["home_team"]).get_id()
+            league_match["away_team_id"] = self.team_repository.find_by_name(league.get_id(),
+                                                                             league_match["away_team"]).get_id()
             del league_match["away_team"]
             del league_match["home_team"]
             league_match["year"] = "2020"
