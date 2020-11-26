@@ -9,6 +9,7 @@ from domain.models.match_player_statistics import MatchPlayerStatistics
 from domain.models.match_statistics import MatchStatistics
 from domain.models.player import Player
 from domain.models.team import Team
+from infra.db.connection import DBConnection
 from infra.db.repos.match_player_statistics_repo import MatchPlayerStatisticsRepo
 from infra.db.repos.match_repo import MatchRepo
 from infra.db.repos.match_report_repo import MatchReportRepo
@@ -77,5 +78,6 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
                     **player_summary)
                 )
             except IntegrityError:
-                # db_session.rollback()
+                # TODO Decouple DBConnection from use case
+                DBConnection.get_db_session().rollback()
                 print("This match player statistics already exists. Continuing...")

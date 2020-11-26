@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 from data.protocols.db.base_league_repo import BaseLeagueRepo
 from data.protocols.db.base_match_repo import BaseMatchRepo
 from data.use_cases.base_use_case import BaseUseCase
+from infra.db.connection import DBConnection
 from infra.db.repos import league_repo
 from infra.db.repos.match_repo import MatchRepo
 from infra.parsers.base_parser import BaseParser
@@ -50,5 +51,6 @@ class ScrapeLeagueMatches(BaseUseCase):
                     Match(league=league, home_team=Team(1, league=league), away_team=Team(1, league=league),
                           **league_match))
             except IntegrityError:
-                db_session.rollback()
+                # TODO Decouple DBConnection from use case
+                DBConnection.get_db_session().rollback()
                 print("Match has already been inserted. Continuing...")

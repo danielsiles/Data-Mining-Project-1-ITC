@@ -3,6 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from data.protocols.db.base_match_repo import BaseMatchRepo
 from data.protocols.db.base_match_report_repo import BaseMatchReportRepo
 from data.use_cases.base_use_case import BaseUseCase
+from infra.db.connection import DBConnection
 from infra.db.repos.match_repo import MatchRepo
 from infra.db.repos.match_report_repo import MatchReportRepo
 from infra.parsers.base_parser import BaseParser
@@ -49,5 +50,6 @@ class ScrapeMatchReport(BaseUseCase):
                                     team_id=match._home_team_id
                         ))
                 except IntegrityError:
-                    # db_session.rollback()
+                    # TODO Decouple DBConnection from use case
+                    DBConnection.get_db_session().rollback()
                     print("This match report already exists. Continuing...")

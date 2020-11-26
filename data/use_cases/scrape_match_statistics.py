@@ -4,6 +4,7 @@ from data.protocols.db.base_match_repo import BaseMatchRepo
 from data.protocols.db.base_match_statistics_repo import BaseMatchStatisticsRepo
 from data.use_cases.base_use_case import BaseUseCase
 from domain.models.match_statistics import MatchStatistics
+from infra.db.connection import DBConnection
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
 
@@ -40,5 +41,6 @@ class ScrapeMatchStatistics(BaseUseCase):
             team_summary["team_id"] = match._home_team_id
             self.match_statistics_repository.create(MatchStatistics(**team_summary))
         except IntegrityError:
-            # db_session.rollback()
+            # TODO Decouple DBConnection from use case
+            DBConnection.get_db_session().rollback()
             print("This match report already exists. Continuing...")
