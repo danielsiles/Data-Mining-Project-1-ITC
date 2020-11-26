@@ -19,7 +19,7 @@ from main.factories.parser.parser_factory import make_match_statistics_parser, m
 from main.factories.scraper.scraper_factory import make_match_statistics_scraper, make_league_table_scraper, \
     make_match_player_statistics_scraper
 from main.factories.use_cases.use_cases_factory import make_scrape_league_table_use_case, \
-    make_scrape_league_matches_use_case
+    make_scrape_league_matches_use_case, make_scrape_match_report_use_case
 
 
 def get_popular_leagues():
@@ -59,7 +59,9 @@ def main():
     # league = get_popular_leagues()[0]
     # make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse()
     # make_scrape_league_table_use_case("Bundesliga").execute()
-    make_scrape_league_matches_use_case("Premier League").execute()
+    # make_scrape_league_matches_use_case("Premier League").execute()
+    make_scrape_match_report_use_case(336).execute()
+
     # ScrapeLeagueTable("Premier League", make_league_table_scraper(), make_league_table_parser()).execute()
     # ScrapeMatchPlayerStatistics(2, make_match_player_statistics_scraper(), make_match_player_statistics_parser())\
     #     .execute()
