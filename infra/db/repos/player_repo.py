@@ -17,4 +17,4 @@ class PlayerRepo(BasePlayerRepo):
         return player
 
     def find_by_name(self, team_id, name):
-        return self._db_session.query(Player).filter(Player.team_id == team_id).filter(Team.name == name).first()
+        return self._db_session.query(Player).filter(Player.team_id == team_id).filter(Player.name == name).first()

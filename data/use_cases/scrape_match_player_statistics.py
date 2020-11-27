@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from sqlalchemy.exc import IntegrityError
 
 from data.protocols.db.base_match_player_statistics_repo import BaseMatchPlayerStatisticsRepo
@@ -32,12 +34,15 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
         self.player_repository = player_repository
         self.match_player_statistics_repo = match_player_statistics_repo
 
-
     def execute(self):
         # TODO Check date of the match if is already finished
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
+
+        if match.get_date() + timedelta(hours=2) > datetime.now():
+            raise ValueError("The match hasn't happened yet")
+
         try:
             html = self.scraper.scrape(match.get_url().replace("Show", "LiveStatistics")
                                        .replace("Live", "LiveStatistics"))

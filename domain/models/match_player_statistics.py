@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, ForeignKey, DateTime, UniqueConstraint
 from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
@@ -11,6 +11,7 @@ from domain.models.team import Team
 class MatchPlayerStatistics(BaseModel, Model):
     __tablename__ = 'match_player_statistics'
     __mapper_args__ = {'column_prefix': '_'}
+    __table_args__ = (UniqueConstraint('match_id', 'team_id', 'player_id'),)
     id = Column('id', Integer, primary_key=True)
     match_id = Column(Integer, ForeignKey('matches.id'))
     match = relationship("Match", back_populates="match_player_statistics")
