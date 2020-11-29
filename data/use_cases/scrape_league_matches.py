@@ -7,8 +7,6 @@ from data.protocols.db.base_match_repo import BaseMatchRepo
 from data.protocols.db.base_team_repo import BaseTeamRepo
 from data.use_cases.base_use_case import BaseUseCase
 from infra.db.connection import DBConnection
-from infra.db.repos import league_repo
-from infra.db.repos.match_repo import MatchRepo
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
 from domain.models.match import Match

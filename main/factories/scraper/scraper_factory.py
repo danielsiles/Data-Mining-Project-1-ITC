@@ -1,4 +1,3 @@
-from config import BASE_URL
 from infra.scrapers.driver import Driver
 from infra.scrapers.league_table_scraper import LeagueTableScraper
 from infra.scrapers.match_player_statistics_scraper import MatchPlayerStatisticsScraper

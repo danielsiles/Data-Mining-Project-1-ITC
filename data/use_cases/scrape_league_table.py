@@ -4,9 +4,6 @@ from data.protocols.db.base_league_repo import BaseLeagueRepo
 from data.protocols.db.base_league_table_repo import BaseLeagueTableRepo
 from data.protocols.db.base_team_repo import BaseTeamRepo
 from data.use_cases.base_use_case import BaseUseCase
-from infra.db.repos.league_repo import LeagueRepo
-from infra.db.repos.league_table_repo import LeagueTableRepo
-from infra.db.repos.team_repo import TeamRepo
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
 from domain.models.league_table import LeagueTable

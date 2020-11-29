@@ -1,8 +1,5 @@
-from abc import ABC, abstractmethod
-
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, \
-    ForeignKey, event
-from sqlalchemy.orm import scoped_session, sessionmaker, backref, relation
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 from config import DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
@@ -12,6 +9,7 @@ Model = declarative_base(name='Model')
 
 class DBConnection:
     _db_session = None
+    _engine = None
 
     @staticmethod
     def get_db_session():
@@ -34,3 +32,5 @@ class DBConnection:
                                                                autoflush=False,
                                                                bind=engine))
         Model.metadata.create_all(bind=engine)
+
+        return engine

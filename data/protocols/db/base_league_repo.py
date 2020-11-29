@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from domain.models.league import League
-
 
 class BaseLeagueRepo(ABC):
 

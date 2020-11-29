@@ -30,5 +30,3 @@ class TeamRepo(BaseTeamRepo):
         :return: Team object if found or None
         """
         return self._db_session.query(Team).filter(Team.league_id == league_id).filter(Team.name == name).first()
-
-

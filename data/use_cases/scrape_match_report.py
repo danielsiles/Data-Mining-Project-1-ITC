@@ -14,7 +14,7 @@ from domain.models.match_report import MatchReport
 class ScrapeMatchReport(BaseUseCase):
 
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
-                 match_repository: BaseMatchRepo,match_report_repository: BaseMatchReportRepo):
+                 match_repository: BaseMatchRepo, match_report_repository: BaseMatchReportRepo):
         """
         Constructor for ScrapeMatchReport use case.
         :param match_id: Match id of the match to get the match report
@@ -67,7 +67,7 @@ class ScrapeMatchReport(BaseUseCase):
                                     type=report_type,
                                     match_id=match.get_id(),
                                     team_id=team_id
-                        ))
+                                    ))
                 except IntegrityError:
                     # TODO Decouple DBConnection from use case
                     DBConnection.get_db_session().rollback()

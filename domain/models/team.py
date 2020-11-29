@@ -16,7 +16,6 @@ class Team(BaseModel, Model):
     table = relationship("LeagueTable")
     players = relationship("Player")
     matches = relationship("Match", primaryjoin="Team._id == Match._away_team_id")
-    matche = relationship("Match", primaryjoin="Team._id == Match._home_team_id")
     url = Column('url', String(255))
     created_at = Column('created_at', DateTime())
     updated_at = Column('updated_at', DateTime())

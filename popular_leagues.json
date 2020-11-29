@@ -45,11 +45,6 @@
         "fixture": "/Regions/31/Tournaments/95/Seasons/8158/Stages/18472/Fixtures/Brazil-Brasileirão-2020"
     },
     {
-        "league_name": "Major League Soccer",
-        "url": "/Regions/233/Tournaments/85/USA-Major-League-Soccer",
-        "fixture": "/Regions/233/Tournaments/85/Seasons/8055/Stages/19087/Fixtures/USA-Major-League-Soccer-2020"
-    },
-    {
         "league_name": "Super Lig",
         "url": "/Regions/225/Tournaments/17/Turkey-Super-Lig",
         "fixture": "/Regions/225/Tournaments/17/Seasons/8313/Stages/18838/Fixtures/Turkey-Super-Lig-2020-2021"
@@ -83,30 +78,5 @@
         "league_name": "Jupiler Pro League",
         "url": "/Regions/22/Tournaments/18/Belgium-Jupiler-Pro-League",
         "fixture": "/Regions/22/Tournaments/18/Seasons/8197/Stages/18620/Fixtures/Belgium-Jupiler-Pro-League-2020-2021"
-    },
-    {
-        "league_name": "Super league",
-        "url": "/Regions/45/Tournaments/162/China-Super-league",
-        "fixture": "/Regions/45/Tournaments/162/Seasons/8122/Stages/18963/Fixtures/China-Super-league-2020"
-    },
-    {
-        "league_name": "Bundesliga II",
-        "url": "/Regions/81/Tournaments/6/Germany-Bundesliga-II",
-        "fixture": "/Regions/81/Tournaments/6/Seasons/8280/Stages/18763/Fixtures/Germany-Bundesliga-II-2020-2021"
-    },
-    {
-        "league_name": "Champions League",
-        "url": "/Regions/250/Tournaments/12/Europe-Champions-League",
-        "fixture": "/Regions/250/Tournaments/12/Seasons/8177/Stages/19009/Fixtures/Europe-Champions-League-2020-2021"
-    },
-    {
-        "league_name": "Europa League",
-        "url": "/Regions/250/Tournaments/30/Europe-Europa-League",
-        "fixture": "/Regions/250/Tournaments/30/Seasons/8178/Stages/19010/Fixtures/Europe-Europa-League-2020-2021"
-    },
-    {
-        "league_name": "UEFA Nations League A",
-        "url": "/Regions/247/Tournaments/683/International-UEFA-Nations-League-A",
-        "fixture": "/Regions/247/Tournaments/683/Seasons/8154/Stages/18457/Fixtures/International-UEFA-Nations-League-A-2020-2021"
     }
 ]

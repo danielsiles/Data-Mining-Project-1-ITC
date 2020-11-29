@@ -14,7 +14,7 @@ from infra.scrapers.base_scraper import BaseScraper
 class ScrapeMatchStatistics(BaseUseCase):
 
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
-                 match_repository: BaseMatchRepo,match_statistics_repository: BaseMatchStatisticsRepo):
+                 match_repository: BaseMatchRepo, match_statistics_repository: BaseMatchStatisticsRepo):
         """
         Constructor for ScrapeMatchPlayerStatistics use case.
         :param match_id: Match id of the match to get player statistics

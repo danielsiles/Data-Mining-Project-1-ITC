@@ -1,5 +1,4 @@
 from data.protocols.db.base_player_repo import BasePlayerRepo
-from domain.models.team import Team
 from domain.models.player import Player
 from infra.db.connection import DBConnection
 

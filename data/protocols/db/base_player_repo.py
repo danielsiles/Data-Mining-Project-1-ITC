@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-from domain.models.team import Team
 from domain.models.player import Player
 
 

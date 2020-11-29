@@ -18,3 +18,10 @@ class LeagueRepo(BaseLeagueRepo):
         :return: League object of the found league or None
         """
         return self._db_session.query(League).filter(League.name == league_name).first()
+
+    def get_all(self):
+        """
+        Get all leagues
+        :return: List of all leagues
+        """
+        return self._db_session.query(League).all()

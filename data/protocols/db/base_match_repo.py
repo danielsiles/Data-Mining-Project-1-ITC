@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from domain.models.match import Match
-
 
 class BaseMatchRepo(ABC):
 
