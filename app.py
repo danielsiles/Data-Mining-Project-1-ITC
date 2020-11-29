@@ -1,5 +1,6 @@
 import json
 import argparse
+import datetime
 from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL
 from data.use_cases.scrape_league_table import ScrapeLeagueTable
@@ -36,6 +37,13 @@ def pretty_print(elem):
     print(json.dumps(elem, indent=4, sort_keys=True))
 
 
+def validate_date_format(date_string):
+    try:
+        datetime.datetime.strptime(date_string, '%m/%d/%Y')
+    except ValueError:
+        raise ValueError("Date format should be MM/DD/YYYY")
+
+
 def main():
     """
     Main function. Execute all the test scripts to scrape the data.
@@ -44,30 +52,48 @@ def main():
    
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--league', default='', choices = possible_leagues, help='enter the league you would like to scrape')
-    parser.add_argument('--fixture', default='',help='enter the match you would like to scrape')
+    parser.add_argument('--league', default=False, choices=possible_leagues, help='enter the league you would like to scrape')
+    parser.add_argument('--match', default=False,help='enter the match you would like to scrape')
+    parser.add_argument('--stat', default=False, action='store_true')
+    parser.add_argument('--all', default=False, action='store_true')
+    parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
+
+
     args = parser.parse_args()
     print(args)
 
-    try:
-        league = str(args.league)
-        fixture = str(args.fixture)
+    league = args.league
+    match = args.match
+    stat = args.stat
+    scrape_all = args.all
+    daterange = args.daterange
 
-	    if len(league) > 1:
-	    	leagues_seed()
-	    	make_scrape_league_table_use_case(league).execute()
+    if daterange is True:
+        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
 
-	   	elif len(fixture) > 1:
-	   		make_scrape_match_player_statistics_use_case(fixture).execute()
 
-	   	elif len(league) > 1 and len(fixture) > 1:
-	   		leagues_seed()
-	   		make_scrape_league_table_use_case(league).execute()
-	   		make_scrape_match_player_statistics_use_case(fixture).execute()
+    if scrape_all is True:
+        function_to_scrape_all()
+
+    elif league is True and match is True and stat is False and scrape_all is False:
+        get_all_matches_from_certain_league(league,match,stat,daterange)
+
+    elif league is True and match is True and stat is True and scrape_all is False:
+        get_all_matches_from_certain_league_with_stat(league,match,stat,daterange)
+
+    elif league is True and match is False and stat is False and scrape_all is False:
+        get_all_matches_from_certain_league_no_stat(league,match,stat,daterange)
+        
+    elif league is False and match is True and stat is True and scrape_all is False:
+        get_all_matches_with_stat(league,match,stat,daterange)
+
+    elif league is False and match is True and stat is False and scrape_all is False:
+        get_all_matches_no_stat(league,match,stat,daterange)
+
 
     except ValueError: 
         print('An Error Occured')
         exit()
-        
+
 if __name__ == '__main__':
     main()
