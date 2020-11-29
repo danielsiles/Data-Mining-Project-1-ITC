@@ -27,15 +27,12 @@ Some example executions:
 
     python app.py --all
     python app.py --league "Serie A" --match
-    python app.py --league "Serie A" --match --stat
     python app.py --league "Serie A" --daterange 01/11/2020
-    python app.py --match --stat
     python app.py --match
     
 -   `--all`  will get all matches of all leagues.
 -   `--league`  specifies a certain league.
 -   `--match` 	specifies a match. If the league argument is added, it will get all matches within a league.
--   `--stat`  will get match statistics. The match argument is needed.
 -   `--daterange`  specifies a start date for scraping. The end date is always the current date.
 
 
