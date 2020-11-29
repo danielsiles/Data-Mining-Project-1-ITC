@@ -74,19 +74,19 @@ def main():
 	    if scrape_all is True:
 	        function_to_scrape_all()
 
-	    elif league is True and match is True and stat is False and scrape_all is False:
+	    elif league is True and match is True and stat is False:
 	        get_all_matches_from_certain_league(league,match,stat,daterange)
 
-	    elif league is True and match is True and stat is True and scrape_all is False:
+	    elif league is True and match is True and stat is True:
 	        get_all_matches_from_certain_league_with_stat(league,match,stat,daterange)
 
-	    elif league is True and match is False and stat is False and scrape_all is False:
+	    elif league is True and match is False and stat is False:
 	        get_all_matches_from_certain_league_no_stat(league,match,stat,daterange)
 	        
-	    elif league is False and match is True and stat is True and scrape_all is False:
+	    elif league is False and match is True and stat is True:
 	        get_all_matches_with_stat(league,match,stat,daterange)
 
-	    elif league is False and match is True and stat is False and scrape_all is False:
+	    elif league is False and match is True and stat is False:
 	        get_all_matches_no_stat(league,match,stat,daterange)
 
     except ValueError: 
