@@ -1,6 +1,9 @@
 import json
 import argparse
 import datetime
+
+from infra.db.repos.league_repo import LeagueRepo
+from infra.db.repos.match_repo import MatchRepo
 from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL
 from data.use_cases.scrape_league_table import ScrapeLeagueTable
@@ -14,6 +17,7 @@ from domain.models.match_statistics import MatchStatistics
 from domain.models.league import League
 from domain.models.player import Player
 from domain.models.team import Team
+from infra.scrapers.driver import Driver
 from main.factories.parser.parser_factory import make_match_statistics_parser, make_league_table_parser, \
     make_match_player_statistics_parser
 from main.factories.scraper.scraper_factory import make_match_statistics_scraper, make_league_table_scraper, \
@@ -48,50 +52,83 @@ def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
-    possible_leagues = ["Premier League","Serie A","LaLiga","Bundesliga","Ligue 1","Liga NOS","Eredivisie","Premier League","Brasileirão","Major League Soccer","Super Lig","Championship","Premiership","League One","League Two","Superliga","Jupiler Pro League","Super league","Bundesliga II","Champions League","Europa League","UEFA Nations League A"]
-   
+    possible_leagues = ["Premier League", "Serie A", "LaLiga", "Bundesliga", "Ligue 1", "Liga NOS", "Eredivisie",
+                        "Premier "
+                        "League",
+                        "Brasileirão", "Major League Soccer", "Super Lig", "Championship", "Premiership", "League One",
+                        "League Two", "Superliga", "Jupiler Pro League", "Super league", "Bundesliga II", "Champions "
+                                                                                                          "League",
+                        "Europa League", "UEFA Nations League A"]
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--league', default=False, choices=possible_leagues, help='enter the league you would like to scrape')
-    parser.add_argument('--match', default=False,help='enter the match you would like to scrape')
+    parser.add_argument('--driver', help='seed the database with popular leagues', required=True)
+    parser.add_argument('--seed', action='store_true', help='seed the database with popular leagues')
+    parser.add_argument('--populate', action='store_true', help='populate the database with leagues tables and '
+                                                                'matches')
+    parser.add_argument('--league', default=False,
+                        choices=possible_leagues,
+                        help='enter the league table you would like to scrape')
+    parser.add_argument('--match', action='store_true', default=False, help='enter the match you would like to scrape')
     parser.add_argument('--stat', default=False, action='store_true')
     parser.add_argument('--all', default=False, action='store_true')
     parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
 
-	try:
-	    args = parser.parse_args()
-	    print(args)
-	    league = args.league
-	    match = args.match
-	    stat = args.stat
-	    scrape_all = args.all
-	    daterange = args.daterange
+    try:
+        args = parser.parse_args()
+        print(args)
+        driver = args.driver
+        league = args.league
+        match = args.match
+        stat = args.stat
+        scrape_all = args.all
+        date = args.daterange
+        seed = args.seed
+        populate = args.populate
 
-	    if daterange is True:
-	    	validate_date_format(daterange)
-	        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
+        Driver.init_driver(driver)
+        mr = MatchRepo()
+        lr = LeagueRepo()
+        if seed is True:
+            leagues_seed(populate=populate)
 
-	    if scrape_all is True:
-	        function_to_scrape_all()
+        if date is True:
+            validate_date_format(date)
+            date = datetime.datetime.strptime(args.daterange, '%Y/%m/%d').strftime('%Y/%m/%d')
 
-	    elif league is True and match is True and stat is False:
-	        get_all_matches_from_certain_league(str(league),int(match),stat,daterange)
+        if scrape_all is True:
+            leagues_seed(populate=True)
+            matches = mr.get_matches()
 
-	    elif league is True and match is True and stat is True:
-	        get_all_matches_from_certain_league_with_stat(str(league),int(match),stat,daterange)
+            for match in matches:
+                match = match[0]
+                make_scrape_match_statistics_use_case(match.get_id()).execute()
+                make_scrape_match_report_use_case(match.get_id()).execute()
+                make_scrape_match_player_statistics_use_case(match.get_id()).execute()
 
-	    elif league is True and match is False and stat is False:
-	        get_all_matches_from_certain_league_no_stat(str(league),int(match),stat,daterange)
-	        
-	    elif league is False and match is True and stat is True:
-	        get_all_matches_with_stat(str(league),int(match),stat,daterange)
+        elif league is not False and match is False and stat is False:
+            make_scrape_league_table_use_case(str(league)).execute()
 
-	    elif league is False and match is True and stat is False:
-	        get_all_matches_no_stat(str(league),int(match),stat,daterange)
+        elif league is False and match is not False and stat is False:
+            leagues = lr.get_all()
+            for league in leagues:
+                make_scrape_league_matches_use_case(league.get_name()).execute()
 
-    except ValueError: 
+        elif league is not False and match is not False and stat is not False:
+            matches = mr.get_matches(league=str(league), date=date)
+
+            for match in matches:
+                match = match[0]
+                make_scrape_match_statistics_use_case(match.get_id()).execute()
+                make_scrape_match_report_use_case(match.get_id()).execute()
+                make_scrape_match_player_statistics_use_case(match.get_id()).execute()
+
+        elif league is not False and match is False and stat is False:
+            make_scrape_league_table_use_case(str(league)).execute()
+
+    except ValueError:
         print('An Error Occured')
         exit()
+
 
 if __name__ == '__main__':
     main()

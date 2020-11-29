@@ -23,7 +23,7 @@ class League(BaseModel, Model):
         super().__init__(*args)
         self._name = kwargs.get("name")
         self._url = kwargs.get("url")
-        self._fixture_url = kwargs.get("feature_url")
+        self._fixture_url = kwargs.get("fixture_url")
         self._is_popular = kwargs.get("is_popular")
 
     def get_id(self):
@@ -31,6 +31,9 @@ class League(BaseModel, Model):
 
     def get_url(self):
         return self._url
+
+    def get_name(self):
+        return self._name
 
     def get_fixture_url(self):
         return self._fixture_url

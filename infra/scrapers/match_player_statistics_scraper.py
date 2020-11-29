@@ -1,6 +1,6 @@
 import time
 from random import random
-from telnetlib import EC
+from selenium.webdriver.support import expected_conditions as cond
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -24,11 +24,11 @@ class MatchPlayerStatisticsScraper(BaseScraper):
         # self._click_player_match_statistics_tabs(PLAYER_STATISTICS_AWAY_ID)
         try:
             element = WebDriverWait(self._driver, 10).until(
-                EC.presence_of_element_located((By.ID, "player-table-statistics-body"))
+                cond.presence_of_element_located((By.CSS_SELECTOR, "#player-table-statistics-body > tr > td"))
             )
-            print(element)
+            print("ELEMENTOOO", element)
         except Exception as e:
-            print(e)
+            print("NAOO ACHOU!!", e)
         html = self._driver.execute_script("return document.documentElement.outerHTML;")
         return html
 

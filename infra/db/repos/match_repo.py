@@ -1,4 +1,5 @@
 from data.protocols.db.base_match_repo import BaseMatchRepo
+from domain.models.league import League
 from domain.models.match import Match
 from infra.db.connection import DBConnection
 
@@ -41,3 +42,17 @@ class MatchRepo(BaseMatchRepo):
                       Match.url: match.get_url()}, synchronize_session="fetch")
 
         self._db_session.commit()
+
+    def get_matches(self, **kwargs):
+        league = kwargs.get("league")
+        date = kwargs.get("date")
+        league = self._db_session.query(League).filter(League.name == league).first()
+        if league is not False and date is not False:
+            return self._db_session.query(Match)\
+                .filter(Match.league_id == league.get_id() and Match.date > date).all()
+        elif league is False and date is not False:
+            return self._db_session.query(Match)\
+                .filter(Match.date > date).all()
+        else:
+            return self._db_session.query(Match)\
+                .filter(Match.date > date).all()
