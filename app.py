@@ -72,19 +72,14 @@ def main():
 	        function_to_scrape_all()
 
 	    elif league is True and match is True:
-	        get_all_matches_from_certain_league(str(league),int(match),daterange)
+	        get_all_matches_from_certain_league(str(league),match,daterange)
 
-	    elif league is True and match is True:
-	        get_all_matches_from_certain_league_with_stat(str(league),int(match),daterange)
 
 	    elif league is True and match is False:
-	        get_all_matches_from_certain_league_no_stat(str(league),int(match),daterange)
-	        
-	    elif league is False and match is True:
-	        get_all_matches_with_stat(str(league),int(match),daterange)
+	        get_all_matches_from_certain_league_no_stat(str(league),match,daterange)
 
 	    elif league is False and match is True:
-	        get_all_matches_no_stat(league,match,daterange)
+	        get_all_matches_no_stat(str(league),match,daterange)
 
     except ValueError: 
         print('An Error Occured')
