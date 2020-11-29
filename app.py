@@ -1,7 +1,7 @@
 import json
-
-from pip._vendor import requests
-
+import argparse
+import datetime
+from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL
 from data.use_cases.scrape_league_table import ScrapeLeagueTable
 from data.use_cases.scrape_match_player_statistics import ScrapeMatchPlayerStatistics
@@ -37,71 +37,61 @@ def pretty_print(elem):
     print(json.dumps(elem, indent=4, sort_keys=True))
 
 
+def validate_date_format(date_string):
+    try:
+        datetime.datetime.strptime(date_string, '%m/%d/%Y')
+    except ValueError:
+        raise ValueError("Date format should be MM/DD/YYYY")
+
+
 def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
-    # x = requests.get("https://www.whoscored.com/Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Show/England-Premier-League-2020-2021")
-    # print(x.text)
-    # try:
-    #     # init_db()
-    # except Exception:
-    #     raise Exception("Could not connect to database")
+    possible_leagues = ["Premier League","Serie A","LaLiga","Bundesliga","Ligue 1","Liga NOS","Eredivisie","Premier League","Brasileirão","Major League Soccer","Super Lig","Championship","Premiership","League One","League Two","Superliga","Jupiler Pro League","Super league","Bundesliga II","Champions League","Europa League","UEFA Nations League A"]
+   
 
-    # LeagueTable()
-    # Match()
-    # MatchStatistics()
-    # MatchReport()
-    # Player()
-    # Team()
-    # MatchPlayerStatistics()
-    # /Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Fixtures/England-Premier-League
-    # leagues_seed()
-    # league = get_popular_leagues()[0]
-    # make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse()
-    # make_scrape_league_table_use_case("Bundesliga").execute()
-    # make_scrape_league_matches_use_case("Premier League").execute()
-    # make_scrape_match_report_use_case(336).execute()
-    # make_scrape_match_statistics_use_case(336).execute()
-    make_scrape_match_player_statistics_use_case(336).execute()
-    # ScrapeLeagueTable("Premier League", make_league_table_scraper(), make_league_table_parser()).execute()
-    # ScrapeMatchPlayerStatistics(2, make_match_player_statistics_scraper(), make_match_player_statistics_parser())\
-    #     .execute()
-    # ScrapeLeagueMatches("Premier League", make_match_scraper(), make_match_parser()).execute()
-    # ScrapeMatchReport(2, make_match_report_scraper(), make_match_report_parser()).execute()
-    # ScrapeMatchStatistics(2, make_match_statistics_scraper(), make_match_statistics_parser()).execute()
-    # GetLeagueTable("Brasileirão", make_league_table_scraper(), make_league_table_parser()).execute()
-    # league_table_html = get_league_page_html(driver, BASE_URL + league['url'])
-    # league_table = parse_league_table_data(league_table_html)
-    #
-    # pretty_print(league_table)
-    #
-    # league_fixtures_html = get_league_fixtures(driver, BASE_URL + league['url'].replace("Show", "Fixtures"))
-    # league_fixtures = parse_league_fixtures(league_fixtures_html)
-    #
-    # pretty_print(league_fixtures)
-    #
-    # match_statistics_html = get_match_statistics_page_html(driver,
-    #                                                        BASE_URL + league_fixtures[0]["url"].replace("Show", "Live"))
-    # match_statistics_home, match_statistics_away = parse_match_statistics(match_statistics_html)
-    #
-    # pretty_print(match_statistics_home)
-    # pretty_print(match_statistics_away)
-    #
-    # match_report_html = get_match_report_page_html(driver,
-    #                                                BASE_URL + league_fixtures[0]["url"].replace("Show", "MatchReport"))
-    # match_report_home, match_report_away = parse_match_report(match_report_html)
-    #
-    # pretty_print(match_report_home)
-    # pretty_print(match_report_away)
-    #
-    # player_match_statistics_html = get_player_match_statistics_page_html(driver,
-    #                                                                      BASE_URL + league_fixtures[0]["url"].replace(
-    #                                                                          "Show", "LiveStatistics"))
-    # player_match_statistics = parse_player_match_statistics(player_match_statistics_html)
-    #
-    # pretty_print(player_match_statistics)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--league', default=False, choices=possible_leagues, help='enter the league you would like to scrape')
+    parser.add_argument('--match', default=False,help='enter the match you would like to scrape')
+    parser.add_argument('--stat', default=False, action='store_true')
+    parser.add_argument('--all', default=False, action='store_true')
+    parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
 
+	try:
+	    args = parser.parse_args()
+	    print(args)
+	    league = args.league
+	    match = args.match
+	    stat = args.stat
+	    scrape_all = args.all
+	    daterange = args.daterange
+
+	    if daterange is True:
+	    	validate_date_format(daterange)
+	        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
+
+	    if scrape_all is True:
+	        function_to_scrape_all()
+
+	    elif league is True and match is True and stat is False:
+	        get_all_matches_from_certain_league(str(league),int(match),stat,daterange)
+
+	    elif league is True and match is True and stat is True:
+	        get_all_matches_from_certain_league_with_stat(str(league),int(match),stat,daterange)
+
+	    elif league is True and match is False and stat is False:
+	        get_all_matches_from_certain_league_no_stat(str(league),int(match),stat,daterange)
+	        
+	    elif league is False and match is True and stat is True:
+	        get_all_matches_with_stat(str(league),int(match),stat,daterange)
+
+	    elif league is False and match is True and stat is False:
+	        get_all_matches_no_stat(str(league),int(match),stat,daterange)
+
+    except ValueError: 
+        print('An Error Occured')
+        exit()
 
 if __name__ == '__main__':
     main()

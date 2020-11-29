@@ -15,7 +15,7 @@ class Driver:
         try:
             if len(sys.argv) > 1:
                 if Driver._driver is None:
-                    Driver._driver = webdriver.Chrome(executable_path=sys.argv[1])
+                    Driver._driver = webdriver.Firefox(executable_path=sys.argv[1])
                 return Driver._driver
             else:
                 raise Exception("Please provide a path to the chromedriver")

@@ -10,7 +10,7 @@ class League(BaseModel, Model):
     __mapper_args__ = {'column_prefix': '_'}
     id = Column('id', Integer, primary_key=True)
     name = Column('name', String(200))
-    url = Column('url', String(200))
+    url = Column('url', String(200), unique=True)
     fixture_url = Column('fixture_url', String(200))
     is_popular = Column('is_popular', Boolean())
     teams = relationship("Team", back_populates="league")
