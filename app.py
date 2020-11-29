@@ -52,21 +52,22 @@ def main():
     try:
         league = str(args.league)
         fixture = str(args.fixture)
+
+	    if len(league) > 1:
+	    	leagues_seed()
+	    	make_scrape_league_table_use_case(league).execute()
+
+	   	elif len(fixture) > 1:
+	   		make_scrape_match_player_statistics_use_case(fixture).execute()
+
+	   	elif len(league) > 1 and len(fixture) > 1:
+	   		leagues_seed()
+	   		make_scrape_league_table_use_case(league).execute()
+	   		make_scrape_match_player_statistics_use_case(fixture).execute()
+
     except ValueError: 
         print('An Error Occured')
         exit()
-
-    if len(league) > 1:
-    	leagues_seed()
-    	make_scrape_league_table_use_case(league).execute()
-
-   	elif len(fixture) > 1:
-   		make_scrape_match_player_statistics_use_case(fixture).execute()
-
-   	elif len(league) > 1 and len(fixture) > 1:
-   		leagues_seed()
-   		make_scrape_league_table_use_case(league).execute()
-   		make_scrape_match_player_statistics_use_case(fixture).execute()
-
+        
 if __name__ == '__main__':
     main()
