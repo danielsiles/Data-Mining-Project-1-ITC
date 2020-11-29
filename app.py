@@ -58,38 +58,36 @@ def main():
     parser.add_argument('--all', default=False, action='store_true')
     parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
 
+	try:
+	    args = parser.parse_args()
+	    print(args)
+	    league = args.league
+	    match = args.match
+	    stat = args.stat
+	    scrape_all = args.all
+	    daterange = args.daterange
 
-    args = parser.parse_args()
-    print(args)
-
-    league = args.league
-    match = args.match
-    stat = args.stat
-    scrape_all = args.all
-    daterange = args.daterange
-
-    if daterange is True:
-        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
+	    if daterange is True:
+	        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
 
 
-    if scrape_all is True:
-        function_to_scrape_all()
+	    if scrape_all is True:
+	        function_to_scrape_all()
 
-    elif league is True and match is True and stat is False and scrape_all is False:
-        get_all_matches_from_certain_league(league,match,stat,daterange)
+	    elif league is True and match is True and stat is False and scrape_all is False:
+	        get_all_matches_from_certain_league(league,match,stat,daterange)
 
-    elif league is True and match is True and stat is True and scrape_all is False:
-        get_all_matches_from_certain_league_with_stat(league,match,stat,daterange)
+	    elif league is True and match is True and stat is True and scrape_all is False:
+	        get_all_matches_from_certain_league_with_stat(league,match,stat,daterange)
 
-    elif league is True and match is False and stat is False and scrape_all is False:
-        get_all_matches_from_certain_league_no_stat(league,match,stat,daterange)
-        
-    elif league is False and match is True and stat is True and scrape_all is False:
-        get_all_matches_with_stat(league,match,stat,daterange)
+	    elif league is True and match is False and stat is False and scrape_all is False:
+	        get_all_matches_from_certain_league_no_stat(league,match,stat,daterange)
+	        
+	    elif league is False and match is True and stat is True and scrape_all is False:
+	        get_all_matches_with_stat(league,match,stat,daterange)
 
-    elif league is False and match is True and stat is False and scrape_all is False:
-        get_all_matches_no_stat(league,match,stat,daterange)
-
+	    elif league is False and match is True and stat is False and scrape_all is False:
+	        get_all_matches_no_stat(league,match,stat,daterange)
 
     except ValueError: 
         print('An Error Occured')
