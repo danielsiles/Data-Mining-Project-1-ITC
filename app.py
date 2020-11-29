@@ -1,7 +1,6 @@
 import json
-
-from pip._vendor import requests
-
+import argparse
+from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL
 from data.use_cases.scrape_league_table import ScrapeLeagueTable
 from data.use_cases.scrape_match_player_statistics import ScrapeMatchPlayerStatistics
@@ -41,67 +40,33 @@ def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
-    # x = requests.get("https://www.whoscored.com/Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Show/England-Premier-League-2020-2021")
-    # print(x.text)
-    # try:
-    #     # init_db()
-    # except Exception:
-    #     raise Exception("Could not connect to database")
+    possible_leagues = ["Premier League","Serie A","LaLiga","Bundesliga","Ligue 1","Liga NOS","Eredivisie","Premier League","Brasileirão","Major League Soccer","Super Lig","Championship","Premiership","League One","League Two","Superliga","Jupiler Pro League","Super league","Bundesliga II","Champions League","Europa League","UEFA Nations League A"]
+   
 
-    # LeagueTable()
-    # Match()
-    # MatchStatistics()
-    # MatchReport()
-    # Player()
-    # Team()
-    # MatchPlayerStatistics()
-    # /Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Fixtures/England-Premier-League
-    # leagues_seed()
-    # league = get_popular_leagues()[0]
-    # make_league_table_parser(make_league_table_scraper(league['url']).scrape()).parse()
-    # make_scrape_league_table_use_case("Bundesliga").execute()
-    # make_scrape_league_matches_use_case("Premier League").execute()
-    # make_scrape_match_report_use_case(336).execute()
-    # make_scrape_match_statistics_use_case(336).execute()
-    make_scrape_match_player_statistics_use_case(336).execute()
-    # ScrapeLeagueTable("Premier League", make_league_table_scraper(), make_league_table_parser()).execute()
-    # ScrapeMatchPlayerStatistics(2, make_match_player_statistics_scraper(), make_match_player_statistics_parser())\
-    #     .execute()
-    # ScrapeLeagueMatches("Premier League", make_match_scraper(), make_match_parser()).execute()
-    # ScrapeMatchReport(2, make_match_report_scraper(), make_match_report_parser()).execute()
-    # ScrapeMatchStatistics(2, make_match_statistics_scraper(), make_match_statistics_parser()).execute()
-    # GetLeagueTable("Brasileirão", make_league_table_scraper(), make_league_table_parser()).execute()
-    # league_table_html = get_league_page_html(driver, BASE_URL + league['url'])
-    # league_table = parse_league_table_data(league_table_html)
-    #
-    # pretty_print(league_table)
-    #
-    # league_fixtures_html = get_league_fixtures(driver, BASE_URL + league['url'].replace("Show", "Fixtures"))
-    # league_fixtures = parse_league_fixtures(league_fixtures_html)
-    #
-    # pretty_print(league_fixtures)
-    #
-    # match_statistics_html = get_match_statistics_page_html(driver,
-    #                                                        BASE_URL + league_fixtures[0]["url"].replace("Show", "Live"))
-    # match_statistics_home, match_statistics_away = parse_match_statistics(match_statistics_html)
-    #
-    # pretty_print(match_statistics_home)
-    # pretty_print(match_statistics_away)
-    #
-    # match_report_html = get_match_report_page_html(driver,
-    #                                                BASE_URL + league_fixtures[0]["url"].replace("Show", "MatchReport"))
-    # match_report_home, match_report_away = parse_match_report(match_report_html)
-    #
-    # pretty_print(match_report_home)
-    # pretty_print(match_report_away)
-    #
-    # player_match_statistics_html = get_player_match_statistics_page_html(driver,
-    #                                                                      BASE_URL + league_fixtures[0]["url"].replace(
-    #                                                                          "Show", "LiveStatistics"))
-    # player_match_statistics = parse_player_match_statistics(player_match_statistics_html)
-    #
-    # pretty_print(player_match_statistics)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--league', default='', choices = possible_leagues, help='enter the league you would like to scrape')
+    parser.add_argument('--fixture', default='',help='enter the match you would like to scrape')
+    args = parser.parse_args()
+    print(args)
 
+    try:
+        league = str(args.league)
+        fixture = str(args.fixture)
+    except ValueError: 
+        print('An Error Occured')
+        exit()
+
+    if len(league) > 1:
+    	leagues_seed()
+    	make_scrape_league_table_use_case(league).execute()
+
+   	elif len(fixture) > 1:
+   		make_scrape_match_player_statistics_use_case(fixture).execute()
+
+   	elif len(league) > 1 and len(fixture) > 1:
+   		leagues_seed()
+   		make_scrape_league_table_use_case(league).execute()
+   		make_scrape_match_player_statistics_use_case(fixture).execute()
 
 if __name__ == '__main__':
     main()
