@@ -68,8 +68,8 @@ def main():
 	    daterange = args.daterange
 
 	    if daterange is True:
+	    	validate_date_format(daterange)
 	        daterange = datetime.datetime.strptime(args.daterange, '%m/%d/%Y').strftime('%m/%d/%Y')
-
 
 	    if scrape_all is True:
 	        function_to_scrape_all()
