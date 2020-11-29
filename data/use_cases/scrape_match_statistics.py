@@ -15,6 +15,14 @@ class ScrapeMatchStatistics(BaseUseCase):
 
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
                  match_repository: BaseMatchRepo,match_statistics_repository: BaseMatchStatisticsRepo):
+        """
+        Constructor for ScrapeMatchPlayerStatistics use case.
+        :param match_id: Match id of the match to get player statistics
+        :param scraper: Scraper method to scrape league tables html
+        :param parser: Parser method to parse the html scraped
+        :param match_repository: Repository class of the matches table
+        :param match_statistics_repository: Repository class of the match_statistics table
+        """
         self.match_id = match_id
         self.scraper = scraper
         self.parser = parser

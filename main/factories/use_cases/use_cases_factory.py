@@ -18,26 +18,51 @@ from main.factories.scraper.scraper_factory import make_match_scraper, make_leag
 
 
 def make_scrape_league_matches_use_case(league_name):
+    """
+    Factory method to create ScrapeLeagueMatches
+    :param league_name: Name of the league to be scraped
+    :return: Instance of ScrapeLeagueMatches
+    """
     return ScrapeLeagueMatches(league_name, make_match_scraper(), make_match_parser(),
                                LeagueRepo(), MatchRepo(), TeamRepo())
 
 
 def make_scrape_league_table_use_case(league_name):
+    """
+    Factory method to create ScrapeLeagueTable
+    :param league_name: Name of the league to be scraped
+    :return: Instance of ScrapeLeagueTable
+    """
     return ScrapeLeagueTable(league_name, make_league_table_scraper(), make_league_table_parser(),
                              LeagueRepo(), TeamRepo(), LeagueTableRepo())
 
 
 def make_scrape_match_player_statistics_use_case(match_id):
+    """
+    Factory method to create ScrapeMatchPlayerStatistics
+    :param match_id: Id of the match to be scraped
+    :return: Instance of ScrapeMatchPlayerStatistics
+    """
     return ScrapeMatchPlayerStatistics(match_id, make_match_player_statistics_scraper(),
                                        make_match_player_statistics_parser(),
                                        MatchRepo(), PlayerRepo(), MatchPlayerStatisticsRepo())
 
 
 def make_scrape_match_report_use_case(match_id):
+    """
+    Factory method to create ScrapeMatchReport
+    :param match_id: Id of the match to be scraped
+    :return: Instance of ScrapeMatchReport
+    """
     return ScrapeMatchReport(match_id, make_match_report_scraper(), make_match_report_parser(),
                              MatchRepo(), MatchReportRepo())
 
 
 def make_scrape_match_statistics_use_case(match_id):
+    """
+    Factory method to create ScrapeMatchStatistics
+    :param match_id: Id of the match to be scraped
+    :return: Instance of ScrapeMatchStatistics
+    """
     return ScrapeMatchStatistics(match_id, make_match_statistics_scraper(), make_match_statistics_parser(),
                                  MatchRepo(), MatchStatisticsRepo())

@@ -27,6 +27,15 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
                  match_repository: BaseMatchRepo, player_repository: BasePlayerRepo,
                  match_player_statistics_repo: BaseMatchPlayerStatisticsRepo):
+        """
+        Constructor for ScrapeMatchPlayerStatistics use case.
+        :param match_id: Match id of the match to get player statistics
+        :param scraper: Scraper method to scrape league tables html
+        :param parser: Parser method to parse the html scraped
+        :param match_repository: Repository class of the matches table
+        :param player_repository: Repository class of the players table
+        :param match_player_statistics_repo: Repository class of the match_player_statistics table
+        """
         self.match_id = match_id
         self.scraper = scraper
         self.parser = parser
@@ -35,7 +44,9 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
         self.match_player_statistics_repo = match_player_statistics_repo
 
     def execute(self):
-        # TODO Check date of the match if is already finished
+        """
+        Scrapes the player statistics data of a match and updates the database
+        """
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
@@ -53,8 +64,8 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
         if players_data is None:
             raise ValueError("Could not parse HTML")
 
-        self._insert_data(match, match._home_team_id, players_data["home"])
-        self._insert_data(match, match._away_team_id, players_data["away"])
+        self._insert_data(match, match.get_home_team_id(), players_data["home"])
+        self._insert_data(match, match.get_away_team_id(), players_data["away"])
         # self._insert_data(match, away_team)
 
     def _insert_data(self, match, team_id, players):

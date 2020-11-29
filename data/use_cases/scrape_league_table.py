@@ -18,6 +18,15 @@ class ScrapeLeagueTable(BaseUseCase):
     def __init__(self, league_name, scraper: BaseScraper, parser: BaseParser,
                  league_repository: BaseLeagueRepo, team_repository: BaseTeamRepo,
                  league_table_repository: BaseLeagueTableRepo):
+        """
+        Constructor for ScrapeLeagueTable use case.
+        :param league_name: Name of the league to scrape the table.
+        :param scraper: Scraper method to scrape league tables html
+        :param parser: Parser method to parse the html scraped
+        :param league_repository: Repository class of the leagues table
+        :param team_repository: Repository class of the teams table
+        :param league_table_repository: Repository class of the tables table
+        """
         self.league_name = league_name
         self.scraper = scraper
         self.parser = parser
@@ -26,6 +35,9 @@ class ScrapeLeagueTable(BaseUseCase):
         self.league_table_repository = league_table_repository
 
     def execute(self):
+        """
+        Scrapes the table data of the league with name self.league_name and update the database
+        """
         league = self.league_repository.find_by_name(self.league_name)
         if league is None:
             raise ValueError("The name of the league passed is invalid")

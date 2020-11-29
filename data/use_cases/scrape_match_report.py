@@ -15,6 +15,14 @@ class ScrapeMatchReport(BaseUseCase):
 
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
                  match_repository: BaseMatchRepo,match_report_repository: BaseMatchReportRepo):
+        """
+        Constructor for ScrapeMatchReport use case.
+        :param match_id: Match id of the match to get the match report
+        :param scraper: Scraper method to scrape league tables html
+        :param parser: Parser method to parse the html scraped
+        :param match_repository: Repository class of the matches table
+        :param match_report_repository: Repository class of the match_reports table
+        """
         self.match_id = match_id
         self.scraper = scraper
         self.parser = parser
@@ -22,6 +30,9 @@ class ScrapeMatchReport(BaseUseCase):
         self.match_report_repository = match_report_repository
 
     def execute(self):
+        """
+        Scrapes the report data of a match and updates the database
+        """
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
