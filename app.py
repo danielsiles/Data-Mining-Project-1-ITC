@@ -60,7 +60,6 @@ def main():
 
 	try:
 	    args = parser.parse_args()
-	    print(args)
 	    league = args.league
 	    match = args.match
 	    stat = args.stat

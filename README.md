@@ -17,16 +17,25 @@ Google Chrome browser installed in your machine.
 
 ## Usage
 
-When running the script, add the path to your 
-chromedriver downloaded during the installation.
+The usage is the following.
 
-For test purposes the script is only getting the results from one league.
- 
-To run the script run the following.
+    app.py [-h] [--seed] [--populate]
+                  [--league {Premier League,Serie A,LaLiga,Bundesliga,Ligue 1,Liga NOS,Eredivisie,Premier League,Brasileirão,Major League Soccer,Super Lig,Championship,Premiership,League One,League Two,Superliga,Jupiler Pro League,Super league,Bundesliga II,Champions League,Europa League,UEFA Nations League A}]
+                  [--match MATCH] [--stat] [--all] [--daterange DATERANGE]
 
-```bash
-main.py [CHROMEDRIVER PATH]
-``` 
+Some example executions:
+
+    python app.py --all
+    python app.py --league "Serie A" --match
+    python app.py --league "Serie A" --daterange 01/11/2020
+    python app.py --match
+    
+-   `--all`  will get all matches of all leagues.
+-   `--league`  specifies a certain league.
+-   `--match` 	specifies a match. If the league argument is added, it will get all matches within a league.
+-   `--daterange`  specifies a start date for scraping. The end date is always the current date.
+
+
 
 ## Contributing
 Please refer to contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
