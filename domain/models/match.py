@@ -16,9 +16,9 @@ class Match(BaseModel, Model):
     league_id = Column(Integer, ForeignKey('leagues.id'))
     league = relationship("League", back_populates="matches")
     home_team_id = Column(Integer, ForeignKey('teams.id'))
-    home_team = relationship("Team", back_populates="matches", primaryjoin="Team._id == Match._home_team_id")
+    home_team = relationship("Team", back_populates="home_matches", primaryjoin="Team._id == Match._home_team_id")
     away_team_id = Column(Integer, ForeignKey('teams.id'))
-    away_team = relationship("Team", back_populates="matches", primaryjoin="Team._id == Match._away_team_id")
+    away_team = relationship("Team", back_populates="away_matches", primaryjoin="Team._id == Match._away_team_id")
     date = Column("date", DateTime())
     home_goals = Column("home_goals", Integer())
     away_goals = Column("away_goals", Integer())
@@ -27,6 +27,7 @@ class Match(BaseModel, Model):
     updated_at = Column('updated_at', DateTime())
 
     match_player_statistics = relationship("MatchPlayerStatistics")
+    match_odds = relationship("MatchOdds")
     match_reports = relationship("MatchReport")
     match_statistics = relationship("MatchStatistics")
 

@@ -4,8 +4,11 @@ import datetime
 
 from sqlalchemy import create_engine
 
+from data.use_cases.request_match_odds import RequestMatchOdds
+from domain.models.match_odds import MatchOdds
 from infra.db.connection import DBConnection
 from infra.db.repos.league_repo import LeagueRepo
+from infra.db.repos.match_odds_repo import MatchOddsRepo
 from infra.db.repos.match_repo import MatchRepo
 from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL, DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT
@@ -20,6 +23,8 @@ from domain.models.match_statistics import MatchStatistics
 from domain.models.league import League
 from domain.models.player import Player
 from domain.models.team import Team
+from infra.requests.match_odds_requester import MatchOddsRequester
+from infra.requests.requests_adapter import RequestsAdapter
 from infra.scrapers.driver import Driver
 from main.factories.parser.parser_factory import make_match_statistics_parser, make_league_table_parser, \
     make_match_player_statistics_parser
@@ -55,6 +60,8 @@ def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
+    RequestMatchOdds("Premier League", MatchOddsRequester(RequestsAdapter()), LeagueRepo(), MatchOddsRepo(), MatchRepo()).execute()
+    return
     possible_leagues = ["Premier League", "Serie A", "LaLiga", "Bundesliga", "Ligue 1", "Liga NOS", "Eredivisie",
                         "Premier "
                         "League",
@@ -138,8 +145,8 @@ def main():
         elif league is not False and match is False and stat is False:
             make_scrape_league_table_use_case(str(league)).execute()
 
-    except ValueError:
-        print('An Error Occured')
+    except Exception as e:
+        print('An Error Occured', e)
         exit()
 
 
