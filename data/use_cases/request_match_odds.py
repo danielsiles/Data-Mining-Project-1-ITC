@@ -66,7 +66,7 @@ class RequestMatchOdds(BaseUseCase):
             print(match)
             home_team_name = match["home_team"]
             match["teams"].remove(home_team_name)
-            try
+            try:
                 recent_match = self.match_repository.get_most_recent_match(home_team_name, match["teams"][0])
             except Exception as e:
                 # Log: Match not found
