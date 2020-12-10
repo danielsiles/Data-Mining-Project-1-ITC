@@ -1,9 +1,9 @@
 import json
 import argparse
 import datetime
+import logging
 
 from sqlalchemy import create_engine
-
 from infra.db.connection import DBConnection
 from infra.db.repos.league_repo import LeagueRepo
 from infra.db.repos.match_repo import MatchRepo
@@ -45,16 +45,68 @@ def pretty_print(elem):
 
 
 def validate_date_format(date_string):
+    """
+    """
     try:
         datetime.datetime.strptime(date_string, '%m/%d/%Y')
     except ValueError:
         raise ValueError("Date format should be MM/DD/YYYY")
 
 
+def execute_cli(create_db, seed, date, scrape_all, league, populate):
+    """
+
+    """
+    if create_db is True:
+        engine = create_engine(f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}',
+                               echo=False,
+                               convert_unicode=True)
+        engine.execute(f"DROP DATABASE {DB_NAME}")
+        engine.execute(f"CREATE DATABASE {DB_NAME}")
+        # leagues_seed()
+
+    if seed is True:
+        leagues_seed(populate=populate)
+
+    if date is True:
+        validate_date_format(date)
+        date = datetime.datetime.strptime(date, '%Y/%m/%d').strftime('%Y/%m/%d')
+
+    if scrape_all is True:
+        leagues_seed(populate=True)
+        matches = mr.get_matches()
+
+        for match in matches:
+            match = match[0]
+            make_scrape_match_statistics_use_case(match.get_id()).execute()
+            make_scrape_match_report_use_case(match.get_id()).execute()
+            make_scrape_match_player_statistics_use_case(match.get_id()).execute()
+
+    elif league is not False and match is False and stat is False:
+        make_scrape_league_table_use_case(str(league)).execute()
+
+    elif league is False and match is not False and stat is False:
+        leagues = lr.get_all()
+        for league in leagues:
+            make_scrape_league_matches_use_case(league.get_name()).execute()
+
+    elif league is not False and match is not False and stat is not False:
+        matches = mr.get_matches(league=str(league), date=date)
+
+        for match in matches:
+            match = match[0]
+            make_scrape_match_statistics_use_case(match.get_id()).execute()
+            make_scrape_match_report_use_case(match.get_id()).execute()
+            make_scrape_match_player_statistics_use_case(match.get_id()).execute()
+
+    elif league is not False and match is False and stat is False:
+        make_scrape_league_table_use_case(str(league)).execute()
+
 def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
+
     possible_leagues = ["Premier League", "Serie A", "LaLiga", "Bundesliga", "Ligue 1", "Liga NOS", "Eredivisie",
                         "Premier "
                         "League",
@@ -62,20 +114,25 @@ def main():
                         "League Two", "Superliga", "Jupiler Pro League", "Super league", "Bundesliga II", "Champions "
                                                                                                           "League",
                         "Europa League", "UEFA Nations League A"]
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--driver', help='seed the database with popular leagues', required=True)
+        parser.add_argument('--create_db', action='store_true', help='drop and creates new database with tables')
+        parser.add_argument('--seed', action='store_true', help='seed the database with popular leagues')
+        parser.add_argument('--populate', action='store_true', help='populate the database with leagues tables and '
+                                                                    'matches')
+        parser.add_argument('--league', default=False,
+                            choices=possible_leagues,
+                            help='enter the league table you would like to scrape')
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--driver', help='seed the database with popular leagues', required=True)
-    parser.add_argument('--create_db', action='store_true', help='drop and creates new database with tables')
-    parser.add_argument('--seed', action='store_true', help='seed the database with popular leagues')
-    parser.add_argument('--populate', action='store_true', help='populate the database with leagues tables and '
-                                                                'matches')
-    parser.add_argument('--league', default=False,
-                        choices=possible_leagues,
-                        help='enter the league table you would like to scrape')
-    parser.add_argument('--match', action='store_true', default=False, help='enter the match you would like to scrape')
-    parser.add_argument('--stat', default=False, action='store_true')
-    parser.add_argument('--all', default=False, action='store_true')
-    parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
+        parser.add_argument('--match', action='store_true', default=False, help='enter the match you would like to scrape')
+        parser.add_argument('--stat', default=False, action='store_true')
+        parser.add_argument('--all', default=False, action='store_true')
+        parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
+
+    except:
+        print('Error in CLI parsing')
+        exit()
 
     try:
         args = parser.parse_args()
@@ -93,53 +150,15 @@ def main():
         Driver.init_driver(driver)
         mr = MatchRepo()
         lr = LeagueRepo()
-        if create_db is True:
-            engine = create_engine(f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}',
-                                   echo=False,
-                                   convert_unicode=True)
-            engine.execute(f"DROP DATABASE {DB_NAME}")
-            engine.execute(f"CREATE DATABASE {DB_NAME}")
-            # leagues_seed()
 
-        if seed is True:
-            leagues_seed(populate=populate)
-
-        if date is True:
-            validate_date_format(date)
-            date = datetime.datetime.strptime(args.daterange, '%Y/%m/%d').strftime('%Y/%m/%d')
-
-        if scrape_all is True:
-            leagues_seed(populate=True)
-            matches = mr.get_matches()
-
-            for match in matches:
-                match = match[0]
-                make_scrape_match_statistics_use_case(match.get_id()).execute()
-                make_scrape_match_report_use_case(match.get_id()).execute()
-                make_scrape_match_player_statistics_use_case(match.get_id()).execute()
-
-        elif league is not False and match is False and stat is False:
-            make_scrape_league_table_use_case(str(league)).execute()
-
-        elif league is False and match is not False and stat is False:
-            leagues = lr.get_all()
-            for league in leagues:
-                make_scrape_league_matches_use_case(league.get_name()).execute()
-
-        elif league is not False and match is not False and stat is not False:
-            matches = mr.get_matches(league=str(league), date=date)
-
-            for match in matches:
-                match = match[0]
-                make_scrape_match_statistics_use_case(match.get_id()).execute()
-                make_scrape_match_report_use_case(match.get_id()).execute()
-                make_scrape_match_player_statistics_use_case(match.get_id()).execute()
-
-        elif league is not False and match is False and stat is False:
-            make_scrape_league_table_use_case(str(league)).execute()
+        try:
+            execute_cli(create_db, seed, date, scrape_all, league, populate)
+        except ValueError:
+            print('Error in CLI parsing')
+            exit()
 
     except ValueError:
-        print('An Error Occured')
+        print('Error in variable assignment')
         exit()
 
 
