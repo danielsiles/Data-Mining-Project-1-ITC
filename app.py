@@ -30,7 +30,7 @@ from main.factories.use_cases.use_cases_factory import make_scrape_league_table_
     make_scrape_match_player_statistics_use_case
 
 
-logging.basicConfig(filename='car_log_file.log',
+logging.basicConfig(filename='app_log_file.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
                     level=logging.INFO)
 
