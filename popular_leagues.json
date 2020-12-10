@@ -2,81 +2,97 @@
     {
         "league_name": "Premier League",
         "url": "/Regions/252/Tournaments/2/England-Premier-League",
-        "fixture": "/Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Fixtures/England-Premier-League-2020-2021"
+        "fixture": "/Regions/252/Tournaments/2/Seasons/8228/Stages/18685/Fixtures/England-Premier-League-2020-2021",
+        "odds_api_league_key": "soccer_epl"
     },
     {
         "league_name": "Serie A",
         "url": "/Regions/108/Tournaments/5/Italy-Serie-A",
-        "fixture": "/Regions/108/Tournaments/5/Seasons/8330/Stages/18873/Fixtures/Italy-Serie-A-2020-2021"
+        "fixture": "/Regions/108/Tournaments/5/Seasons/8330/Stages/18873/Fixtures/Italy-Serie-A-2020-2021",
+        "odds_api_league_key": "soccer_italy_serie_a"
     },
     {
         "league_name": "LaLiga",
         "url": "/Regions/206/Tournaments/4/Spain-LaLiga",
-        "fixture": "/Regions/206/Tournaments/4/Seasons/8321/Stages/18851/Fixtures/Spain-LaLiga-2020-2021"
+        "fixture": "/Regions/206/Tournaments/4/Seasons/8321/Stages/18851/Fixtures/Spain-LaLiga-2020-2021",
+        "odds_api_league_key": "soccer_spain_la_liga"
     },
     {
         "league_name": "Bundesliga",
         "url": "/Regions/81/Tournaments/3/Germany-Bundesliga",
-        "fixture": "/Regions/81/Tournaments/3/Seasons/8279/Stages/18762/Fixtures/Germany-Bundesliga-2020-2021"
+        "fixture": "/Regions/81/Tournaments/3/Seasons/8279/Stages/18762/Fixtures/Germany-Bundesliga-2020-2021",
+        "odds_api_league_key": "soccer_germany_bundesliga"
     },
     {
         "league_name": "Ligue 1",
         "url": "/Regions/74/Tournaments/22/France-Ligue-1",
-        "fixture": "/Regions/74/Tournaments/22/Seasons/8185/Stages/18594/Fixtures/France-Ligue-1-2020-2021"
+        "fixture": "/Regions/74/Tournaments/22/Seasons/8185/Stages/18594/Fixtures/France-Ligue-1-2020-2021",
+        "odds_api_league_key": "soccer_france_ligue_one"
     },
     {
         "league_name": "Liga NOS",
         "url": "/Regions/177/Tournaments/21/Portugal-Liga-NOS",
-        "fixture": "/Regions/177/Tournaments/21/Seasons/8315/Stages/18842/Fixtures/Portugal-Liga-NOS-2020-2021"
+        "fixture": "/Regions/177/Tournaments/21/Seasons/8315/Stages/18842/Fixtures/Portugal-Liga-NOS-2020-2021",
+        "odds_api_league_key": "soccer_portugal_primeira_liga"
     },
     {
         "league_name": "Eredivisie",
         "url": "/Regions/155/Tournaments/13/Netherlands-Eredivisie",
-        "fixture": "/Regions/155/Tournaments/13/Seasons/8187/Stages/18596/Fixtures/Netherlands-Eredivisie-2020-2021"
+        "fixture": "/Regions/155/Tournaments/13/Seasons/8187/Stages/18596/Fixtures/Netherlands-Eredivisie-2020-2021",
+        "odds_api_league_key": "soccer_netherlands_eredivisie"
     },
     {
         "league_name": "Russia Premier League",
         "url": "/Regions/182/Tournaments/77/Russia-Premier-League",
-        "fixture": "/Regions/182/Tournaments/77/Seasons/8242/Stages/18707/Fixtures/Russia-Premier-League-2020-2021"
+        "fixture": "/Regions/182/Tournaments/77/Seasons/8242/Stages/18707/Fixtures/Russia-Premier-League-2020-2021",
+        "odds_api_league_key": "soccer_russia_premier_league"
     },
     {
         "league_name": "Brasileir\u00e3o",
         "url": "/Regions/31/Tournaments/95/Brazil-Brasileir\u00e3o",
-        "fixture": "/Regions/31/Tournaments/95/Seasons/8158/Stages/18472/Fixtures/Brazil-Brasileirão-2020"
+        "fixture": "/Regions/31/Tournaments/95/Seasons/8158/Stages/18472/Fixtures/Brazil-Brasileirão-2020",
+        "odds_api_league_key": "soccer_brazil_campeonato"
     },
     {
         "league_name": "Super Lig",
         "url": "/Regions/225/Tournaments/17/Turkey-Super-Lig",
-        "fixture": "/Regions/225/Tournaments/17/Seasons/8313/Stages/18838/Fixtures/Turkey-Super-Lig-2020-2021"
+        "fixture": "/Regions/225/Tournaments/17/Seasons/8313/Stages/18838/Fixtures/Turkey-Super-Lig-2020-2021",
+        "odds_api_league_key": "soccer_turkey_super_league"
     },
     {
         "league_name": "Championship",
         "url": "/Regions/252/Tournaments/7/England-Championship",
-        "fixture": "/Regions/252/Tournaments/7/Seasons/8304/Stages/18825/Fixtures/England-Championship-2020-2021"
+        "fixture": "/Regions/252/Tournaments/7/Seasons/8304/Stages/18825/Fixtures/England-Championship-2020-2021",
+        "odds_api_league_key": "soccer_efl_champ"
     },
     {
         "league_name": "Premiership",
         "url": "/Regions/253/Tournaments/20/Scotland-Premiership",
-        "fixture": "/Regions/253/Tournaments/20/Seasons/8191/Stages/18606/Fixtures/Scotland-Premiership-2020-2021"
+        "fixture": "/Regions/253/Tournaments/20/Seasons/8191/Stages/18606/Fixtures/Scotland-Premiership-2020-2021",
+        "odds_api_league_key": "soccer_spl"
     },
     {
         "league_name": "League One",
         "url": "/Regions/252/Tournaments/8/England-League-One",
-        "fixture": "/Regions/252/Tournaments/8/Seasons/8305/Stages/18826/Fixtures/England-League-One-2020-2021"
+        "fixture": "/Regions/252/Tournaments/8/Seasons/8305/Stages/18826/Fixtures/England-League-One-2020-2021",
+        "odds_api_league_key": "soccer_england_league1"
     },
     {
         "league_name": "League Two",
         "url": "/Regions/252/Tournaments/9/England-League-Two",
-        "fixture": "/Regions/252/Tournaments/9/Seasons/8306/Stages/18827/Fixtures/England-League-Two-2020-2021"
+        "fixture": "/Regions/252/Tournaments/9/Seasons/8306/Stages/18827/Fixtures/England-League-Two-2020-2021",
+        "odds_api_league_key": "soccer_england_league2"
     },
     {
         "league_name": "Superliga",
         "url": "/Regions/11/Tournaments/68/Argentina-Superliga",
-        "fixture": "/Regions/11/Tournaments/68/Seasons/7905/Stages/17737/Fixtures/Argentina-Superliga-2019-2020"
+        "fixture": "/Regions/11/Tournaments/68/Seasons/7905/Stages/17737/Fixtures/Argentina-Superliga-2019-2020",
+        "odds_api_league_key": "soccer_argentina_primera_division"
     },
     {
         "league_name": "Jupiler Pro League",
         "url": "/Regions/22/Tournaments/18/Belgium-Jupiler-Pro-League",
-        "fixture": "/Regions/22/Tournaments/18/Seasons/8197/Stages/18620/Fixtures/Belgium-Jupiler-Pro-League-2020-2021"
+        "fixture": "/Regions/22/Tournaments/18/Seasons/8197/Stages/18620/Fixtures/Belgium-Jupiler-Pro-League-2020-2021",
+        "odds_api_league_key": "soccer_belgium_first_div"
     }
 ]

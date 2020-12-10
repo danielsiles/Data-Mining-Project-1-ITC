@@ -14,6 +14,7 @@ def leagues_seed(populate=False):
         leagues = json.loads(file.read())
         for league in leagues:
             lg = League(**{"name": league["league_name"], "url": league["url"],
+                           "odds_api_league_key": league["odds_api_league_key"],
                            "fixture_url": league["fixture"], "is_popular": True})
             try:
                 DBConnection.get_db_session().merge(lg)

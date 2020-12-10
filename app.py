@@ -4,8 +4,12 @@ import datetime
 import logging
 
 from sqlalchemy import create_engine
+
+from data.use_cases.request_match_odds import RequestMatchOdds
+from domain.models.match_odds import MatchOdds
 from infra.db.connection import DBConnection
 from infra.db.repos.league_repo import LeagueRepo
+from infra.db.repos.match_odds_repo import MatchOddsRepo
 from infra.db.repos.match_repo import MatchRepo
 from infra.db.seeds.leagues_seed import leagues_seed
 from config import BASE_URL, DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT
@@ -20,6 +24,8 @@ from domain.models.match_statistics import MatchStatistics
 from domain.models.league import League
 from domain.models.player import Player
 from domain.models.team import Team
+from infra.requests.match_odds_requester import MatchOddsRequester
+from infra.requests.requests_adapter import RequestsAdapter
 from infra.scrapers.driver import Driver
 from main.factories.parser.parser_factory import make_match_statistics_parser, make_league_table_parser, \
     make_match_player_statistics_parser
@@ -27,7 +33,7 @@ from main.factories.scraper.scraper_factory import make_match_statistics_scraper
     make_match_player_statistics_scraper
 from main.factories.use_cases.use_cases_factory import make_scrape_league_table_use_case, \
     make_scrape_league_matches_use_case, make_scrape_match_report_use_case, make_scrape_match_statistics_use_case, \
-    make_scrape_match_player_statistics_use_case
+    make_scrape_match_player_statistics_use_case, make_request_match_odds_use_case
 
 
 logging.basicConfig(filename='app_log_file.log',
@@ -66,10 +72,10 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate):
     """
 
     """
-
     logging.info(f'command line arguments to be processed: {create_db}, {seed}, {date}, {scrape_all}, {league}, {populate}')
 
     try:
+
         if create_db is True:
             logging.info(f'creating the database.')
             engine = create_engine(f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}',
@@ -116,10 +122,15 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate):
 
         elif league is not False and match is False and stat is False:
             make_scrape_league_table_use_case(str(league)).execute()
+
+        elif league is False and match is False and stat is False and odds is not False:
+            make_request_match_odds_use_case(str(odds)).execute()
+
     except:
         logging.error(f'Could not process cli arguments.')
         print('Error processing your command line arguments. Try again.')
 
+        
 def assigning_args(args):
     """
     """
@@ -178,18 +189,15 @@ def main():
     except ValueError:
         logging.error(f'Could not assign command line arguments to variables.')
         raise ValueError('Could not assign command line arguments to variables.')
+
         exit()
 
-        Driver.init_driver(driver)
-        mr = MatchRepo()
-        lr = LeagueRepo()
-
-        try:
-            execute_cli(create_db, seed, date, scrape_all, league, populate)
-        except ValueError:
-            logging.error('Error assigning variables to command line arguments')
-            raise ValueError('Error assigning variables to command line arguments')
-            exit()
+    try:
+        execute_cli(create_db, seed, date, scrape_all, league, populate)
+    except ValueError:
+        logging.error('Error assigning variables to command line arguments')
+        raise ValueError('Error assigning variables to command line arguments')
+        exit()
 
 if __name__ == '__main__':
     main()

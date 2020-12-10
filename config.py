@@ -1,5 +1,6 @@
 # Main config
-
+API_KEY = "b2cc49b26fc7198625220e91af7fd17d"
+ODDS_API_URL = f"https://api.the-odds-api.com/v3/odds/?apiKey={API_KEY}&region=eu&mkt=h2h&sport="
 BASE_URL = "https://whoscored.com"
 
 DB_USERNAME = "root"
