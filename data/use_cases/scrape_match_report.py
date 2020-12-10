@@ -41,24 +41,26 @@ class ScrapeMatchReport(BaseUseCase):
         """
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
-            raise ValueError("Match not found")
             logging.error("Match not found")
+            raise ValueError("Match not found")
 
         if match.get_date() + timedelta(hours=2) > datetime.now():
-            raise ValueError("The match hasn't happened yet")
             logging.error(f"The match hasn't happened yet: {match.get_date() + timedelta(hours=2)}")
+            raise ValueError("The match hasn't happened yet")
 
         try:
             html = self.scraper.scrape(match.get_url().replace("Show", "MatchReport").replace("Live", "MatchReport"))
+            logging.info("HTML scraping was successful.")
+
         except Exception:
+            logging.error("Error while scraping HTML")
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
-            logging.error("The match hasn't happened yet")
 
         home_summary, away_summary = self.parser.parse(html)
         if home_summary is None:
-            raise ValueError("Could not parse HTML")
-            logging.error("The match hasn't happened yet")
-
+            logging.error("Error while scraping home_summary HTML")
+            raise ValueError("Could not parse home_summary HTML")
+            
         self._insert_data(match, home_summary)
         self._insert_data(match, away_summary, is_home=False)
 
@@ -78,8 +80,9 @@ class ScrapeMatchReport(BaseUseCase):
                                     match_id=match.get_id(),
                                     team_id=team_id
                                     ))
+                
                 except IntegrityError:
                     # TODO Decouple DBConnection from use case
                     DBConnection.get_db_session().rollback()
-                    logging.error("The match hasn't happened yet")
+                    logging.error(f"Match {match} already exists in DB.")
                     print("This match report already exists. Continuing...")

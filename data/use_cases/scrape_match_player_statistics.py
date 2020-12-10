@@ -22,11 +22,9 @@ from infra.scrapers.base_scraper import BaseScraper
 from domain.models.match_report import MatchReport
 
 
-
 logging.basicConfig(filename='srape_match_player_statistics_log_file.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
                     level=logging.INFO)
-
 
 class ScrapeMatchPlayerStatistics(BaseUseCase):
 
@@ -55,25 +53,25 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
         """
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
-            raise ValueError("Match not found")
             logging.error(f"Match: {match} not found.")
+            raise ValueError("Match not found")
 
         if match.get_date() + timedelta(hours=2) > datetime.now():
-            raise ValueError("The match hasn't happened yet")
             logging.error(f"The match hasn't happened yet: {match.get_date() + timedelta(hours=2)}")
+            raise ValueError("The match hasn't happened yet")
 
         try:
             html = self.scraper.scrape(match.get_url().replace("Show", "LiveStatistics")
                                        .replace("Live", "LiveStatistics"))
             logging.info("HTML scraping was successful.")
         except Exception:
-            raise ValueError("Could not scrape data, an error occurred while getting the html data")
             logging.error("Error while scrapping HTML")
+            raise ValueError("Could not scrape data, an error occurred while getting the html data")
 
         players_data = self.parser.parse(html)
         if players_data is None:
+            logging.error(f"Could not scrape HTML for players_data: {players_data}")
             raise ValueError("Could not parse HTML for players_data")
-            logging.error("Could not scrape HTML for players_data")
 
         self._insert_data(match, match.get_home_team_id(), players_data["home"])
         self._insert_data(match, match.get_away_team_id(), players_data["away"])
@@ -81,12 +79,14 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
 
     def _insert_data(self, match, team_id, players):
         for player_index in players:
+            logging.info(f"Processing player_index: {player_index}")
             try:
                 player_summary = players[player_index]
                 player_summary["match_id"] = match.get_id()
                 player_summary["team_id"] = team_id
                 if player_summary["rating"] == "-":
                     player_summary["rating"] = None
+
                 player = self.player_repository.find_by_name(team_id, player_summary["player_name"])
                 if player is None:
                     try:
@@ -95,9 +95,11 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
                             "team_id": team_id
                         }))
                         logging.info(f"Player {player_summary["player_name"]} was inserted/updated successfuly.")
+                    
                     except IntegrityError:
+                        logging.error(f"team_id: {team_id} could not be found.")
                         raise Exception("Could not update league table because team was not found")
-                        logging.error(f"Team {team} could not be found.")
+    
                 player_summary["player_id"] = player.get_id()
 
                 self.match_player_statistics_repo.create(MatchPlayerStatistics(
@@ -108,5 +110,5 @@ class ScrapeMatchPlayerStatistics(BaseUseCase):
                 )
             except IntegrityError:
                 DBConnection.get_db_session().rollback()
-                logging.error("The name of the league passed is invalid")
+                logging.error(f"match player statistics: {match,player} already exists in DB.")
                 print("This match player statistics already exists. Continuing...")

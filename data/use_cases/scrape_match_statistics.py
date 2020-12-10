@@ -10,9 +10,11 @@ from infra.db.connection import DBConnection
 from infra.parsers.base_parser import BaseParser
 from infra.scrapers.base_scraper import BaseScraper
 
+logging.basicConfig(filename='scrape_match_statistics_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 class ScrapeMatchStatistics(BaseUseCase):
-
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
                  match_repository: BaseMatchRepo, match_statistics_repository: BaseMatchStatisticsRepo):
         """
@@ -32,19 +34,25 @@ class ScrapeMatchStatistics(BaseUseCase):
     def execute(self):
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
+            logging.error("Could not parse HTML")
             raise ValueError("Match not found")
 
         if match.get_date() + timedelta(hours=2) > datetime.now():
+            logging.error(f"The match hasn't happened yet: {match.get_date() + timedelta(hours=2)}")
             raise ValueError("The match hasn't happened yet")
 
         try:
             html = self.scraper.scrape(match.get_url().replace("Show", "Live"))
+            logging.info("HTML scraping was successful.")
+        
         except Exception:
+            logging.error("Could not scrape HTML")
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
 
         home_team, away_team = self.parser.parse(html)
         if home_team is None:
-            raise ValueError("Could not parse HTML")
+            logging.error("Error while scraping home_team HTML")
+            raise ValueError("Could not scrape HTML")
 
         self._insert_data(match, home_team)
         self._insert_data(match, away_team, is_home=False)
@@ -57,7 +65,8 @@ class ScrapeMatchStatistics(BaseUseCase):
             team_summary["match_id"] = match.get_id()
             team_summary["team_id"] = team_id
             self.match_statistics_repository.create(MatchStatistics(**team_summary))
+        
         except IntegrityError:
-            # TODO Decouple DBConnection from use case
+            logging.error(f"match report {team_summary["match_id"]} already exists in DB.")
             DBConnection.get_db_session().rollback()
             print("This match report already exists. Continuing...")

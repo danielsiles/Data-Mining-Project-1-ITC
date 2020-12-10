@@ -43,9 +43,8 @@ class ScrapeLeagueMatches(BaseUseCase):
         """
         league = self.league_repository.find_by_name(self.league_name)
         if league is None:
-            logging.error("The name of the league passed is invalid")
-            raise ValueError("The name of the league passed is invalid")
-
+            logging.error("League is invalid")
+            raise ValueError("League is invalid")
         print(league.get_url())
 
         try:
@@ -53,15 +52,15 @@ class ScrapeLeagueMatches(BaseUseCase):
             logging.info("HTML scraping was successful.")
 
         except Exception:
-            logging.error("An error occurred while getting the html data.")
+            logging.error("HTML scraping was unsuccessful.")
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
 
         league_matches = self.parser.parse(html)
         logging.info(f"league_matches scraped {league_matches}")
 
         if league_matches is None or len(league_matches) == 0:
-            logging.error("Could not parse HTML")
-            raise ValueError("Could not parse HTML")
+            logging.error(f"Could not scrape HTML for league_matches: {league_matches}")
+            raise ValueError("Could not scrape HTML")
 
         for league_match in league_matches:
             logging.info(f"parsing: {league_match}")
@@ -77,11 +76,12 @@ class ScrapeLeagueMatches(BaseUseCase):
 
             try:
                 league_match["date"] = datetime.datetime.strptime(league_match["date"], "%A, %b %d %Y %H:%M")
+
                 self.match_repository.insert_or_update(
                     Match(league=league, home_team=Team(1, league=league), away_team=Team(1, league=league),
                           **league_match))
 
             except IntegrityError:
                 DBConnection.get_db_session().rollback()
-                logging.error("Match has already been inserted.")
+                logging.error(f"{league_match} has already been inserted.")
                 print("Match has already been inserted. Continuing...")
