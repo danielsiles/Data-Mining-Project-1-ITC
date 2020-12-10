@@ -11,6 +11,12 @@ from infra.scrapers.base_scraper import BaseScraper
 from domain.models.match_report import MatchReport
 
 
+
+logging.basicConfig(filename='scrape_match_report_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
+
+
 class ScrapeMatchReport(BaseUseCase):
 
     def __init__(self, match_id, scraper: BaseScraper, parser: BaseParser,
@@ -36,18 +42,22 @@ class ScrapeMatchReport(BaseUseCase):
         match = self.match_repository.find_by_id(self.match_id)
         if match is None:
             raise ValueError("Match not found")
+            logging.error("Match not found")
 
         if match.get_date() + timedelta(hours=2) > datetime.now():
             raise ValueError("The match hasn't happened yet")
+            logging.error(f"The match hasn't happened yet: {match.get_date() + timedelta(hours=2)}")
 
         try:
             html = self.scraper.scrape(match.get_url().replace("Show", "MatchReport").replace("Live", "MatchReport"))
         except Exception:
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
+            logging.error("The match hasn't happened yet")
 
         home_summary, away_summary = self.parser.parse(html)
         if home_summary is None:
             raise ValueError("Could not parse HTML")
+            logging.error("The match hasn't happened yet")
 
         self._insert_data(match, home_summary)
         self._insert_data(match, away_summary, is_home=False)
@@ -71,4 +81,5 @@ class ScrapeMatchReport(BaseUseCase):
                 except IntegrityError:
                     # TODO Decouple DBConnection from use case
                     DBConnection.get_db_session().rollback()
+                    logging.error("The match hasn't happened yet")
                     print("This match report already exists. Continuing...")
