@@ -9,6 +9,10 @@ from infra.scrapers.base_scraper import BaseScraper
 from domain.models.league_table import LeagueTable
 from domain.models.team import Team
 
+logging.basicConfig(filename='scrape_league_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
+
 
 class ScrapeLeagueTable(BaseUseCase):
 
@@ -38,14 +42,20 @@ class ScrapeLeagueTable(BaseUseCase):
         league = self.league_repository.find_by_name(self.league_name)
         if league is None:
             raise ValueError("The name of the league passed is invalid")
+            logging.error("The name of the league passed is invalid")
         try:
             html = self.scraper.scrape(league.get_url())
+            logging.info("HTML scraping was successful.")
+        
         except Exception:
             raise ValueError("Could not scrape data, an error occurred while getting the html data")
+            logging.error("Could not scrape from HTML")
 
         league_table_rows, league_year = self.parser.parse(html)
         if league_table_rows is None or len(league_table_rows) == 0:
             raise ValueError("Could not parse HTML")
+            logging.error("Could not parse HTML")
+
         print(league_table_rows)
         for league_table_row in league_table_rows:
             league_table_row["league_id"] = league.get_id()
@@ -57,8 +67,11 @@ class ScrapeLeagueTable(BaseUseCase):
                         "league_id": league_table_row["league_id"],
                         "url": league_table_row["team_url"]
                     }))
+                    logging.info(f"Team successfuly updated or created {league_table_row["team_name"]}")
+
                 except IntegrityError:
                     raise Exception("Could not update league table because team was not found")
+                    logging.error(f"Team not found {team}")
 
             league_table_row["team_id"] = team.get_id()
             league_table_row["year"] = league_year
