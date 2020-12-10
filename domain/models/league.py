@@ -13,6 +13,7 @@ class League(BaseModel, Model):
     url = Column('url', String(200), unique=True)
     fixture_url = Column('fixture_url', String(200))
     is_popular = Column('is_popular', Boolean())
+    odds_api_league_key = Column('odds_api_league_key', String(255))
     teams = relationship("Team", back_populates="league")
     table = relationship("LeagueTable", back_populates="league")
     matches = relationship("Match", back_populates="league")
@@ -25,6 +26,7 @@ class League(BaseModel, Model):
         self._url = kwargs.get("url")
         self._fixture_url = kwargs.get("fixture_url")
         self._is_popular = kwargs.get("is_popular")
+        self._odds_api_league_key = kwargs.get("odds_api_league_key")
 
     def get_id(self):
         return self._id
@@ -37,6 +39,9 @@ class League(BaseModel, Model):
 
     def get_fixture_url(self):
         return self._fixture_url
+
+    def get_odds_api_league_key(self):
+        return self._odds_api_league_key
 
     def __str__(self):
         return str(self.__dict__)

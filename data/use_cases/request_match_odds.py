@@ -47,10 +47,12 @@ class RequestMatchOdds(BaseUseCase):
 
         try:
             # Make url right
-            response = self.requester.execute('soccer_brazil_campeonato')
+
+            response = self.requester.execute(league.get_odds_api_league_key())
             if response.status_code != 200:
-                raise Exception("Could not request data, an error occurred while requesting the api")
+                raise Exception("Request was not a success, an error occurred while requesting the api")
             odds_data = response.json()
+
             if not odds_data["success"]:
                 raise Exception("The request to api was not successful")
 
@@ -59,14 +61,18 @@ class RequestMatchOdds(BaseUseCase):
             raise ValueError("Could not request data, an error occurred while requesting the api")
 
     def insert_data(self, data):
+        print(data)
         for match in data:
+            print(match)
             home_team_name = match["home_team"]
             match["teams"].remove(home_team_name)
-            recent_match = self.match_repository.get_most_recent_match(home_team_name, match["teams"][0])
-            print(type(recent_match))
-            print(recent_match[0])
+            try
+                recent_match = self.match_repository.get_most_recent_match(home_team_name, match["teams"][0])
+            except Exception as e:
+                # Log: Match not found
+                continue
+
             for site in match["sites"]:
-                print(site)
                 self.match_odds_repository.create(MatchOdds(**{
                        "match_id": int(recent_match[0]),
                        "site_name": site["site_nice"],

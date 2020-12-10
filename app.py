@@ -32,7 +32,7 @@ from main.factories.scraper.scraper_factory import make_match_statistics_scraper
     make_match_player_statistics_scraper
 from main.factories.use_cases.use_cases_factory import make_scrape_league_table_use_case, \
     make_scrape_league_matches_use_case, make_scrape_match_report_use_case, make_scrape_match_statistics_use_case, \
-    make_scrape_match_player_statistics_use_case
+    make_scrape_match_player_statistics_use_case, make_request_match_odds_use_case
 
 
 def get_popular_leagues():
@@ -60,8 +60,6 @@ def main():
     """
     Main function. Execute all the test scripts to scrape the data.
     """
-    RequestMatchOdds("Premier League", MatchOddsRequester(RequestsAdapter()), LeagueRepo(), MatchOddsRepo(), MatchRepo()).execute()
-    return
     possible_leagues = ["Premier League", "Serie A", "LaLiga", "Bundesliga", "Ligue 1", "Liga NOS", "Eredivisie",
                         "Premier "
                         "League",
@@ -83,6 +81,9 @@ def main():
     parser.add_argument('--stat', default=False, action='store_true')
     parser.add_argument('--all', default=False, action='store_true')
     parser.add_argument('--daterange', default=False, help='The date format is the following %m/%d/%Y')
+    parser.add_argument('--odds', default=False,
+                        choices=possible_leagues,
+                        help='Get odds of matches of the league')
 
     try:
         args = parser.parse_args()
@@ -96,6 +97,7 @@ def main():
         date = args.daterange
         seed = args.seed
         populate = args.populate
+        odds = args.odds
 
         Driver.init_driver(driver)
         mr = MatchRepo()
@@ -144,6 +146,9 @@ def main():
 
         elif league is not False and match is False and stat is False:
             make_scrape_league_table_use_case(str(league)).execute()
+
+        elif league is False and match is False and stat is False and odds is not False:
+            make_request_match_odds_use_case(str(odds)).execute()
 
     except Exception as e:
         print('An Error Occured', e)
