@@ -1,3 +1,5 @@
+import logging
+
 from datetime import datetime, timedelta
 
 from sqlalchemy.exc import IntegrityError

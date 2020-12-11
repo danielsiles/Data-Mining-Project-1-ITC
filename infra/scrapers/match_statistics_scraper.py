@@ -1,9 +1,17 @@
+import logging
+
 from selenium.webdriver.support import expected_conditions as cond
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
 from config import MATCH_STATISTICS_ID, BASE_URL
 from infra.scrapers.base_scraper import BaseScraper
+
+
+logging.basicConfig(filename='match_statistics_scraper_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
+
 
 
 class MatchStatisticsScraper(BaseScraper):
@@ -20,8 +28,11 @@ class MatchStatisticsScraper(BaseScraper):
             element = WebDriverWait(self._driver, 10).until(
                 cond.presence_of_element_located((By.CLASS_NAME, "match-centre-stat"))
             )
-            print("ELEMENTOOO", element)
+            print(f"Scrape of {element} succesful.")
+            logging.info(f"Scrape of {url}: succesful.")
+
         except Exception as e:
-            print("NAOO ACHOU!!", e)
+            print(f"Error while Scraping {url}: {e}")
+            logging.error(f"Error while Scraping {url}: {e}")
 
         return self._driver.find_element_by_id(MATCH_STATISTICS_ID).get_attribute('innerHTML')

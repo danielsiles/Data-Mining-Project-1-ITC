@@ -1,5 +1,5 @@
+import logging
 from sqlalchemy.exc import IntegrityError
-
 from data.protocols.db.base_league_repo import BaseLeagueRepo
 from data.protocols.db.base_league_table_repo import BaseLeagueTableRepo
 from data.protocols.db.base_team_repo import BaseTeamRepo
