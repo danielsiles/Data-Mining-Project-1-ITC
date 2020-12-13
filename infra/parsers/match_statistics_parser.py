@@ -1,8 +1,16 @@
+import logging
+
+
 from infra.parsers.base_parser import BaseParser
 from bs4 import BeautifulSoup as bs
 
 from config import MATCH_STATISTICS_RESULT_ID, MATCH_STATISTICS_SCORE_CLASS, MATCH_STATISTICS_TABLE_ID, \
     MATCH_STATISTICS_TABLE_ROW_CLASS, MATCH_STATISTICS_TABLE_ROW_VALUE_CLASS
+
+
+logging.basicConfig(filename='match_statistics_parser_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 
 class MatchStatisticsParser(BaseParser):
@@ -22,6 +30,7 @@ class MatchStatisticsParser(BaseParser):
         match_statistics_table = soup.find(id=MATCH_STATISTICS_TABLE_ID).find("ul")\
             .find_all(class_=MATCH_STATISTICS_TABLE_ROW_CLASS)
         for row in match_statistics_table:
+            logging.info(f"Parsing: {row}")
             stats = row.find_all("span", class_=MATCH_STATISTICS_TABLE_ROW_VALUE_CLASS)
             home_team.append(stats[0].get_text(" ", strip=True))
             away_team.append(stats[1].get_text(" ", strip=True))

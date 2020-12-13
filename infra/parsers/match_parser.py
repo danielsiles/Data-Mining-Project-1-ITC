@@ -1,8 +1,14 @@
+import logging
+
+
 from infra.parsers.base_parser import BaseParser
 from bs4 import BeautifulSoup as bs
 
 from config import FIXTURE_TABLE_ID, FIXTURE_TABLE_ROW, FIXTURE_TABLE_HEADER
 
+logging.basicConfig(filename='match_parser_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 class MatchParser(BaseParser):
 
@@ -17,6 +23,7 @@ class MatchParser(BaseParser):
         curr_date = ""
         matches = []
         for fixture in fixtures:
+            logging.info(f"Parsing: {fixture}")
             header = fixture.find(class_=FIXTURE_TABLE_HEADER)
             if header is not None:
                 curr_date = header.get_text(" ", strip=True)

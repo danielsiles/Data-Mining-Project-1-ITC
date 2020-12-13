@@ -1,3 +1,4 @@
+import logging
 import time
 from random import random
 from selenium.webdriver.support import expected_conditions as cond
@@ -8,6 +9,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from config import PLAYER_STATISTICS_HOME_ID, PLAYER_STATISTICS_AWAY_ID, PLAYER_STATISTICS_OFFENSIVE_TAB_NAME, \
     PLAYER_STATISTICS_DEFENSIVE_TAB_NAME, PLAYER_STATISTICS_PASSING_TAB_NAME, BASE_URL
 from infra.scrapers.base_scraper import BaseScraper
+
+
+logging.basicConfig(filename='match_player_statistics_scraper_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 
 class MatchPlayerStatisticsScraper(BaseScraper):
@@ -26,9 +32,12 @@ class MatchPlayerStatisticsScraper(BaseScraper):
             element = WebDriverWait(self._driver, 10).until(
                 cond.presence_of_element_located((By.CSS_SELECTOR, "#player-table-statistics-body > tr > td"))
             )
-            print("ELEMENTOOO", element)
+            print(f"Scrape of {element} succesful.")
+            logging.info(f"Scrape of {url}: succesful.")
+
         except Exception as e:
-            print("NAOO ACHOU!!", e)
+            print(f"Error while Scraping {url}: {e}")
+            logging.error(f"Error while Scraping {url}: {e}")
         html = self._driver.execute_script("return document.documentElement.outerHTML;")
         return html
 

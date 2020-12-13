@@ -1,6 +1,5 @@
 from data.protocols.db.base_match_statistics_repo import BaseMatchStatisticsRepo
 from domain.models.match_odds import MatchOdds
-from domain.models.match_statistics import MatchStatistics
 from infra.db.connection import DBConnection
 
 

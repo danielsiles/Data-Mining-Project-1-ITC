@@ -1,8 +1,16 @@
+import logging
+
 from infra.parsers.base_parser import BaseParser
 from bs4 import BeautifulSoup as bs
 
 from config import MATCH_STATISTICS_RESULT_ID, MATCH_STATISTICS_SCORE_CLASS, MATCH_STATISTICS_TABLE_ID, \
     MATCH_STATISTICS_TABLE_ROW_CLASS, MATCH_STATISTICS_TABLE_ROW_VALUE_CLASS, PLAYER_STATISTICS_TABLE_ID
+
+
+logging.basicConfig(filename='match_player_statistics_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
+
 
 
 class MatchPlayerStatisticsParser(BaseParser):
@@ -34,6 +42,7 @@ class MatchPlayerStatisticsParser(BaseParser):
         # keys = dict(zip(type_ids, [summary_keys, offensive_keys, defensive_keys, passing_keys]))
         keys = dict(zip(type_ids, [summary_keys]))
         for tp in types:
+            logging.info(f"Parsing: {tp}")
             for type_id in type_ids:
                 table = soup.find(id=f"live-player-{tp}-stats").find(id=f"live-player-{tp}-{type_id}").find(
                     id=PLAYER_STATISTICS_TABLE_ID)

@@ -79,4 +79,4 @@ def make_request_match_odds_use_case(league_name):
     :return: Instance of RequestMatchOdds
     """
     return RequestMatchOdds(league_name, MatchOddsRequester(RequestsAdapter()),
-                            LeagueRepo(), MatchOddsRepo(), MatchRepo()).execute()
+                            LeagueRepo(), MatchOddsRepo(), MatchRepo())

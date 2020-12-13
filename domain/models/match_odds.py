@@ -3,8 +3,6 @@ from sqlalchemy.orm import relationship
 
 from infra.db.connection import Model
 from domain.models.base_model import BaseModel
-from domain.models.league import League
-from domain.models.team import Team
 
 
 class MatchOdds(BaseModel, Model):
@@ -38,4 +36,3 @@ class MatchOdds(BaseModel, Model):
 
     def get_id(self):
         return self._id
-

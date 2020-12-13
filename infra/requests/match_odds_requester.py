@@ -1,4 +1,4 @@
-from config import BASE_URL, ODDS_API_URL
+from config import ODDS_API_URL
 from data.protocols.requester.base_match_odds_requester import BaseMatchOddsRequester
 
 
@@ -12,4 +12,3 @@ class MatchOddsRequester(BaseMatchOddsRequester):
         :return: Json data returned by the api's endpoint
         """
         return self._requester.get(ODDS_API_URL + url)
-

@@ -1,7 +1,16 @@
+import logging
+
+
 from infra.parsers.base_parser import BaseParser
 from bs4 import BeautifulSoup as bs
 
 from config import MATCH_REPORT_SUMMARY_TABLE_CLASS, MATCH_REPORT_SUMMARY_TABLE_HEADER_CLASS
+
+
+
+logging.basicConfig(filename='match_report_parser_log_file.log',
+                    format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',
+                    level=logging.INFO)
 
 
 class MatchReportParser(BaseParser):
@@ -19,7 +28,10 @@ class MatchReportParser(BaseParser):
         away_summary = {"strengths": [], "weaknesses": [], "styles": []}
         types = ["strengths", "weaknesses", "styles"]
         type_id = -1
+        
         for index, row in enumerate(rows):
+            logging.info("Parsing:", index, row)
+
             if index == 0:
                 continue
 
