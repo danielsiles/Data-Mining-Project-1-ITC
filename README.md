@@ -30,6 +30,7 @@ Some example executions:
     python app.py --driver [driver_path] --league "Serie A" --daterange 01/11/2020
     python app.py --driver [driver_path] --match
     python app.py --driver [driver_path] --seed --populate
+    python app.py --driver [driver_path] --odds "Serie A"
     
 -   `--driver`  path to the chrome driver for scraping pages.
 -   `--create_db`  creates the database.
@@ -39,6 +40,7 @@ Some example executions:
 -   `--match` 	specifies to scrape recent matches. If the league argument is added, it will get all matches within a league.
 -   `--stat` 	specifies to scrape statistics of matches. If the league argument is added, it will get all matches within a league.
 -   `--daterange`  specifies a start date for scraping. The end date is always the current date. Format (YYYY/MM/DD)
+-   `--odds` 	specifies to request odds of matches in betting.
 
 
 ## Database
