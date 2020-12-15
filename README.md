@@ -135,7 +135,14 @@ Description of the tables and their columns:
     - `long_ball_success`: INT, Number of success long balls of the player in the match
     - `through_ball`: INT, Number of through balls of the player in the match
     - `through_ball_success`: INT, Number of success through balls of the player in the match
- 
+- **match_odds**: Match statistics of a match
+    - `id`: PRIMARY KEY, INT auto incremental
+    - `match_id`: FOREIGN KEY, INT, id of the match
+    - `site_name`: VARCHAR, Name of the betting website
+    - `home_win`: DOUBLE, Odds for the home team to win
+    - `draw`: DOUBLE, Odds for the match to draw
+    - `home_loss`: DOUBLE, Odds for the home team to lose
+    - `last_update`: DOUBLE, Last time that the odds were updated on the betting site 
     
 ## Contributing
 Please refer to contribution guidelines for submitting patches and additions. In general, we follow the "fork-and-pull" Git workflow.
