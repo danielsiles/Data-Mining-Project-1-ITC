@@ -10,7 +10,6 @@ lxml==4.6.1
 parse==1.18.0
 pyee==7.0.4
 PyMySQL==0.10.1
-pyppeteer==0.2.2
 pyquery==1.4.3
 requests==2.25.0
 selenium==3.141.0
