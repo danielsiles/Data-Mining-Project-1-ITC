@@ -130,9 +130,9 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat
 
         elif league is False and match is False and stat is False and odds is not False:
             make_request_match_odds_use_case(str(odds)).execute()
-    except ValueError:
+    except ValueError as e:
         logging.error(f'Could not process cli arguments.')
-        print('Error processing your command line arguments. Try again.')
+        print('Error processing your command line arguments. Try again.', e)
 
 
 def assigning_args(args):
@@ -198,7 +198,7 @@ def main():
     try:
         args = parser.parse_args()
         driver, create_db, league, match, stat, scrape_all, date, seed, populate, odds = assigning_args(args)
-        print(driver)
+
         Driver.init_driver(driver)
         try:
             execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat, odds)

@@ -39,6 +39,9 @@ class MatchPlayerStatisticsScraper(BaseScraper):
             print(f"Error while Scraping {url}: {e}")
             logging.error(f"Error while Scraping {url}: {e}")
         html = self._driver.execute_script("return document.documentElement.outerHTML;")
+        self._driver.delete_all_cookies()
+        self._driver.set_window_size(800, 800)
+        self._driver.set_window_position(0, 0)
         return html
 
     def _click_player_match_statistics_tabs(self, tab_id):

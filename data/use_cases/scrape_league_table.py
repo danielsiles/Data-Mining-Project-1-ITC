@@ -47,9 +47,9 @@ class ScrapeLeagueTable(BaseUseCase):
             html = self.scraper.scrape(league.get_url())
             logging.info("HTML scraping was successful.")
         
-        except Exception:
+        except Exception as e:
             logging.error("HTML scraping was unsuccessful.")
-            raise ValueError("Could not scrape data, an error occurred while getting the html data")
+            raise ValueError("Could not scrape data, an error occurred while getting the html data", e)
 
         league_table_rows, league_year = self.parser.parse(html)
         if league_table_rows is None or len(league_table_rows) == 0:

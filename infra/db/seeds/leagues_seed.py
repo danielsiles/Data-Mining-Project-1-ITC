@@ -5,7 +5,7 @@ from domain.models.league import League
 from infra.db.connection import DBConnection
 from main.factories.use_cases.use_cases_factory import make_scrape_league_matches_use_case, \
     make_scrape_league_table_use_case
-
+import time
 
 logging.basicConfig(filename='league_seed.log',
                     format='%(asctime)s-%(levelname)s-FILE:%(filename)s-FUNC:%(funcName)s-LINE:%(lineno)d-%(message)s',

@@ -12,6 +12,9 @@ class MatchScraper(BaseScraper):
         :return: Html element scraped by the driver
         """
         self._driver.get(BASE_URL + url)
+        self._driver.delete_all_cookies()
+        self._driver.set_window_size(800, 800)
+        self._driver.set_window_position(0, 0)
         return self._driver.execute_script("return document.documentElement.outerHTML;")
 
 

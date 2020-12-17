@@ -34,5 +34,7 @@ class MatchStatisticsScraper(BaseScraper):
         except Exception as e:
             print(f"Error while Scraping {url}: {e}")
             logging.error(f"Error while Scraping {url}: {e}")
-
+        self._driver.delete_all_cookies()
+        self._driver.set_window_size(800, 800)
+        self._driver.set_window_position(0, 0)
         return self._driver.find_element_by_id(MATCH_STATISTICS_ID).get_attribute('innerHTML')
