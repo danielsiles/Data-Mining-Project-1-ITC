@@ -2,6 +2,7 @@ import json
 import argparse
 import datetime
 import logging
+import os
 
 from sqlalchemy import create_engine
 
@@ -193,6 +194,7 @@ def main():
     except ValueError:
         print('Error in command line parsing')
         logging.error(f'Error in command line parsing')
+        os.system("ps -ef | grep 'Google' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
         exit()
 
     try:
@@ -204,12 +206,14 @@ def main():
             execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat, odds)
         except ValueError as e:
             logging.error('Error assigning variables to command line arguments')
-            print(e)
+            os.system("ps -ef | grep 'Google' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
             exit()
     except ValueError:
         logging.error(f'Could not assign command line arguments to variables.')
+        os.system("ps -ef | grep 'Google' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
         exit()
 
 
 if __name__ == '__main__':
     main()
+    os.system("ps -ef | grep 'Google' | grep -v grep | awk '{print $2}' | xargs -r kill -9")
