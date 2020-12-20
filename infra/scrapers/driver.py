@@ -16,6 +16,7 @@ logging.basicConfig(filename='driver_log_file.log',
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 " \
              "Safari/537.36 "
+
 class Driver:
     _driver = None
 
@@ -48,7 +49,7 @@ class Driver:
         except Exception as e:
             logging.error(f"Driver cannot be found. User entered: {sys.argv[1]}")
             raise FileNotFoundError("Could not execute webdriver. Make sure you provided the correct path to the "
-                                    "chromedriver",e )
+                                    "chromedriver", e)
 
     @staticmethod
     def init_driver(driver_path):
