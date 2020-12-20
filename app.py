@@ -102,6 +102,8 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat
 
             for match in matches:
                 print(match.__dict__)
+                if match.home_goals is None:
+                    continue
                 make_scrape_match_statistics_use_case(match.get_id()).execute()
                 make_scrape_match_report_use_case(match.get_id()).execute()
                 make_scrape_match_player_statistics_use_case(match.get_id()).execute()

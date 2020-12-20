@@ -75,4 +75,4 @@ class MatchRepo(BaseMatchRepo):
             return self._db_session.query(Match) \
                 .filter(Match.date > date).all()
         else:
-            return self._db_session.query(Match).filter(Match.home_goals.isnot(None)).all()
+            return self._db_session.query(Match).all()
