@@ -98,7 +98,7 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat
         if scrape_all is True:
             leagues_seed(populate=True)
 
-            matches = mr.get_matches()
+            matches = mr.get_matches(league=False, data=False)
 
             for match in matches:
                 match = match[0]
