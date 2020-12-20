@@ -1,10 +1,10 @@
 # Main config
-API_KEY = "b2cc49b26fc7198625220e91af7fd17d"
+API_KEY = "a0f051ecbe12637ec3f97e80eaeb08b7"
 ODDS_API_URL = f"https://api.the-odds-api.com/v3/odds/?apiKey={API_KEY}&region=eu&mkt=h2h&sport="
 BASE_URL = "https://whoscored.com"
 
 DB_USERNAME = "root"
-DB_PASSWORD = ""
+DB_PASSWORD = "q1w2e3"
 DB_HOST = "localhost"
 DB_PORT = "3306"
 DB_NAME = "whoscored_db"
