@@ -104,9 +104,18 @@ def execute_cli(create_db, seed, date, scrape_all, league, populate, match, stat
                 if match._home_goals is None:
                     continue
                 print(match.__dict__)
-                make_scrape_match_statistics_use_case(match.get_id()).execute()
-                make_scrape_match_report_use_case(match.get_id()).execute()
-                make_scrape_match_player_statistics_use_case(match.get_id()).execute()
+                try:
+                    make_scrape_match_statistics_use_case(match.get_id()).execute()
+                except:
+                    print("Could not scrape match_statistics")
+                try:
+                    make_scrape_match_report_use_case(match.get_id()).execute()
+                except:
+                    print("Could not scrape match_report")
+                try:
+                    make_scrape_match_player_statistics_use_case(match.get_id()).execute()
+                except:
+                    print("Could not scrape player match_statistics")
 
         elif league is not False and match is False and stat is False:
             make_scrape_league_table_use_case(str(league)).execute()
